@@ -1,0 +1,109 @@
+<!--<ion-header>
+  <ion-toolbar>
+    <ion-title>فرم اطلاعات کاربر</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form text-end  [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+    <ion-item>
+      <ion-label position="floating">نام کامل</ion-label>
+      <ion-input formControlName="fullName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">بیوگرافی</ion-label>
+      <ion-textarea formControlName="bio"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">لینک تصویر</ion-label>
+      <ion-input type="url" formControlName="imageUrl"></ion-input>
+    </ion-item>
+
+
+
+    <ion-item>
+      <ion-label>فعال است؟</ion-label>
+      <ion-toggle dir="ltr" class="text-start" formControlName="isActive"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label >آرایشگاه</ion-label>
+      <ion-select dir="ltr"  formControlName="barberShopId">
+        <ion-select-option *ngFor="let shop of barberShops" [value]="shop.id">
+          {{ shop.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="userForm.invalid">ذخیره</ion-button>
+
+  </form>
+</ion-content>-->
+<!--<ion-page>-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title slot="end">ثبت‌نام کاربر</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="register-form">
+
+    <!-- Full Name -->
+    <ion-item fill="outline">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">نام </ion-label>
+      <ion-input formControlName="fullName"></ion-input>
+    </ion-item>
+
+    <!-- Username -->
+    <ion-item fill="outline">
+      <ion-icon name="person-circle-outline" slot="start">></ion-icon>
+      <ion-label position="floating">نام کاربری</ion-label>
+      <ion-input formControlName="fullName"></ion-input>
+    </ion-item>
+
+    <!-- Image -->
+    <ion-item fill="outline">
+      <ion-icon name="call-outline" slot="start"></ion-icon>
+      <ion-label position="floating"> موبایل</ion-label>
+      <ion-input dir="ltr" formControlName="imageUrl"></ion-input>
+    </ion-item>
+
+
+
+    <!-- Is Active -->
+    <!--<ion-item lines="none" class="switch-item">
+      <ion-label>فعال</ion-label>
+      <ion-toggle formControlName="isActive" slot="end" color="success"></ion-toggle>
+    </ion-item>-->
+    <!-- User type -->
+    <ion-item fill="outline">
+      <ion-icon name="megaphone-outline" slot="start"></ion-icon>
+      <ion-label position="floating">وضعیت کاربر </ion-label>
+      <!--<ion-select dir="ltr" formControlName="barberShopId" interface="popover">-->
+      <!--<ion-select-option *ngFor="let shop of user_type" [value]="shop.id">
+        {{ shop.name }}
+      </ion-select-option>-->
+
+
+      <ion-select class="rtl-select"  aria-label="Favorite Fruit" value="">
+        <ion-select-option *ngFor="let shop of user_type">
+          {{ shop.name }}
+        </ion-select-option>
+      </ion-select>
+
+      <!--</ion-select>-->
+    </ion-item>
+
+    <!-- Submit Button -->
+    <ion-button expand="block" type="submit" [disabled]="userForm.invalid" color="primary" class="ion-margin-top">
+      ثبت‌نام
+    </ion-button>
+
+  </form>
+</ion-content>
+<!--</ion-page>-->

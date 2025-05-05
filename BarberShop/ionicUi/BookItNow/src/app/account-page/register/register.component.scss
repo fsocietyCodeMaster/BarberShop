@@ -1,0 +1,44 @@
+form ion-item
+{
+    direction: rtl;
+}
+
+.register-form {
+  ion-item {
+    margin-top: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .switch-item {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  ion-button {
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 14px rgba(63, 81, 181, 0.3);
+  }
+}
+
+.radio-wrapper {
+  direction: rtl!important;
+}
+
+ion-select {
+  display: flex;
+  direction: ltr;
+}
+
+//.rtl-select {
+//  direction: rtl;
+
+//  ion-select-option {
+//    text-align: right !important;
+//  }
+//}
+

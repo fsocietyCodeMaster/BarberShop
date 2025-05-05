@@ -35,3 +35,31 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('../src/assets/fonts/Vazir.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body, ion-content, ion-label, ion-title, h1, h2, h3, h4, h5, h6, p, input, button {
+  font-family: 'Vazir', sans-serif !important;
+}
+
+
+.alert-radio-label {
+  text-align: right;
+  direction: rtl;
+  width: 100%;
+}
+
+.alert-button-inner {
+  text-align: right;
+  direction: rtl;
+}
+
+.alert-wrapper {
+    border: none;
+}
