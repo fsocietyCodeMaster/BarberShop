@@ -2,7 +2,7 @@
 using BarberShop.Repository;
 using MediatR;
 
-namespace BarberShop.Feature.Command.Barber
+namespace BarberShop.Feature.Command.Barber.SelectBarberShop
 {
     public class SelectBarberShopCommandHandler : IRequestHandler<SelectBarberShopCommand, ResponseDTO>
     {

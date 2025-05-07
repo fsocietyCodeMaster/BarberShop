@@ -8,5 +8,6 @@ namespace BarberShop.Repository
         Task<ResponseDTO> DeleteUserAsync(Guid id);
         Task<ResponseDTO> UpdateUserAsync(string Username, string FullName, string PhoneNumber, IFormFile ImageUrl);
         Task<ResponseDTO> GetUser(ClaimsPrincipal user);
+        Task<ResponseDTO> SelectBarber(string id);
     }
 }
