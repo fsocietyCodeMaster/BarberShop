@@ -5,6 +5,7 @@ using BarberShop.DTO.User;
 using BarberShop.Model;
 using BarberShop.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace BarberShop.UnitOfWork.User
@@ -47,6 +48,7 @@ namespace BarberShop.UnitOfWork.User
                 return error;
             }
         }
+
 
         public async Task<ResponseDTO> GetUser(ClaimsPrincipal user)
         {

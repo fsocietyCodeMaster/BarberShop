@@ -23,7 +23,7 @@ namespace BarberShop.UnitOfWork.User
             _configuration = configuration;
         }
 
-        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, IFormFile ImageUrl, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber, string role)
+        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber, string role)
         {
             var identityUser = new T_User()
             {
@@ -32,187 +32,187 @@ namespace BarberShop.UnitOfWork.User
                 PhoneNumber = PhoneNumber,
                 IsActive = true
             };
-            if (ImageUrl != null)
+            //if (ImageUrl != null)
+            //{
+            //    if (ImageUrl.Length == 0)
+            //    {
+            //        var error = new ResponseDTO
+            //        {
+            //            Message = "فایل آپلود شده خالی است",
+            //            IsSuccess = false,
+            //            StatusCode = StatusCodes.Status400BadRequest,
+            //            Data = null
+            //        };
+            //        return error;
+            //    }
+            //    if (ImageUrl.Length > 1048576)
+            //    {
+            //        var error = new ResponseDTO
+            //        {
+            //            Message = "حجم فایل تصویر بیشتر از ۱ مگابایت است",
+            //            IsSuccess = false,
+            //            StatusCode = StatusCodes.Status400BadRequest,
+            //            Data = null
+            //        };
+            //        return error;
+            //    }
+            //    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            //    var fileExtension = Path.GetExtension(ImageUrl.FileName);
+            //    if (!allowedExtensions.Contains(fileExtension.ToLower()))
+            //    {
+            //        return new ResponseDTO
+            //        {
+            //            Message = "نوع فایل نامعتبر است",
+            //            IsSuccess = false,
+            //            StatusCode = StatusCodes.Status400BadRequest,
+            //            Data = null
+            //        };
+            //    }
+            //    var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            //    if (!Directory.Exists(uploadFolder))
+            //    {
+            //        Directory.CreateDirectory(uploadFolder);
+            //    }
+            //    var fileName = Guid.NewGuid().ToString() + fileExtension;
+            //    var url = Path.Combine(uploadFolder, fileName);
+            //    using (var fileStream = new FileStream(url, FileMode.Create))
+            //    {
+            //        await ImageUrl.CopyToAsync(fileStream);
+            //    }
+            //    identityUser.ImageUrl = url;
+
+            if (role == "user")
             {
-                if (ImageUrl.Length == 0)
+
+                if (!await _roleManager.RoleExistsAsync("user"))
                 {
-                    var error = new ResponseDTO
+                    var userRole = new IdentityRole()
                     {
-                        Message = "فایل آپلود شده خالی است",
-                        IsSuccess = false,
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        Data = null
+                        Name = "user",
                     };
-                    return error;
+                    await _roleManager.CreateAsync(userRole);
+
                 }
-                if (ImageUrl.Length > 1048576)
+                var result = await _userManager.CreateAsync(identityUser, Password);
+                if (result.Succeeded)
                 {
-                    var error = new ResponseDTO
+                    await _userManager.AddToRoleAsync(identityUser, "user");
+                    return new ResponseDTO()
                     {
-                        Message = "حجم فایل تصویر بیشتر از ۱ مگابایت است",
-                        IsSuccess = false,
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        Data = null
+                        Message = "کاربر با موفقیت ایجاد شد",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = new {role}
                     };
-                    return error;
-                }
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var fileExtension = Path.GetExtension(ImageUrl.FileName);
-                if (!allowedExtensions.Contains(fileExtension.ToLower()))
-                {
-                    return new ResponseDTO
-                    {
-                        Message = "نوع فایل نامعتبر است",
-                        IsSuccess = false,
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        Data = null
-                    };
-                }
-                var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                if (!Directory.Exists(uploadFolder))
-                {
-                    Directory.CreateDirectory(uploadFolder);
-                }
-                var fileName = Guid.NewGuid().ToString() + fileExtension;
-                var url = Path.Combine(uploadFolder, fileName);
-                using (var fileStream = new FileStream(url, FileMode.Create))
-                {
-                    await ImageUrl.CopyToAsync(fileStream);
-                }
-                identityUser.ImageUrl = url;
-
-                if (role == "user")
-                {
-
-                    if (!await _roleManager.RoleExistsAsync("user"))
-                    {
-                        var userRole = new IdentityRole()
-                        {
-                            Name = "user",
-                        };
-                        await _roleManager.CreateAsync(userRole);
-
-                    }
-                    var result = await _userManager.CreateAsync(identityUser, Password);
-                    if (result.Succeeded)
-                    {
-                        await _userManager.AddToRoleAsync(identityUser, "user");
-                        return new ResponseDTO()
-                        {
-                            Message = "کاربر با موفقیت ایجاد شد",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-                    else
-                    {
-                        return new ResponseDTO()
-                        {
-                            Message = "مشکلی در ایجاد کاربر رخ داده است",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-
-                }
-                else if (role == "barber")
-                {
-                    if (!await _roleManager.RoleExistsAsync("barber"))
-                    {
-                        var userRole = new IdentityRole()
-                        {
-                            Name = "barber",
-                        };
-                        await _roleManager.CreateAsync(userRole);
-
-                    }
-                    identityUser.Bio = Bio;
-                    identityUser.StartTime = StartTime;
-                    identityUser.EndTime = EndTime;
-                    var result = await _userManager.CreateAsync(identityUser, Password);
-                    if (result.Succeeded)
-                    {
-                        await _userManager.AddToRoleAsync(identityUser, "barber");
-                        return new ResponseDTO()
-                        {
-                            Message = "کاربر با موفقیت ایجاد شد",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-                    else
-                    {
-                        return new ResponseDTO()
-                        {
-                            Message = "مشکلی در ایجاد کاربر رخ داده است",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-                }
-                else if (role == "barbershop")
-                {
-                    if (!await _roleManager.RoleExistsAsync("barbershop"))
-                    {
-                        var userRole = new IdentityRole()
-                        {
-                            Name = "barbershop",
-                        };
-                        await _roleManager.CreateAsync(userRole);
-
-                    }
-                    var result = await _userManager.CreateAsync(identityUser, Password);
-
-                    if (result.Succeeded)
-                    {
-                        await _userManager.AddToRoleAsync(identityUser, "barbershop");
-                        return new ResponseDTO()
-                        {
-                            Message = "کاربر با موفقیت ایجاد شد",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-                    else
-                    {
-                        return new ResponseDTO()
-                        {
-                            Message = "مشکلی در ایجاد کاربر رخ داده است",
-                            IsSuccess = true,
-                            StatusCode = StatusCodes.Status200OK,
-                            Data = null
-                        };
-                    }
-
                 }
                 else
                 {
                     return new ResponseDTO()
                     {
-                        Message = "There is problem while sending the data.",
+                        Message = "مشکلی در ایجاد کاربر رخ داده است",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = null
+                    };
+                }
+
+            }
+            else if (role == "barber")
+            {
+                if (!await _roleManager.RoleExistsAsync("barber"))
+                {
+                    var userRole = new IdentityRole()
+                    {
+                        Name = "barber",
+                    };
+                    await _roleManager.CreateAsync(userRole);
+
+                }
+                identityUser.Bio = Bio;
+                identityUser.StartTime = StartTime;
+                identityUser.EndTime = EndTime;
+                var result = await _userManager.CreateAsync(identityUser, Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(identityUser, "barber");
+                    return new ResponseDTO()
+                    {
+                        Message = "کاربر با موفقیت ایجاد شد",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = new { role }
+                    };
+                }
+                else
+                {
+                    return new ResponseDTO()
+                    {
+                        Message = "مشکلی در ایجاد کاربر رخ داده است",
                         IsSuccess = true,
                         StatusCode = StatusCodes.Status200OK,
                         Data = null
                     };
                 }
             }
+            else if (role == "barbershop")
+            {
+                if (!await _roleManager.RoleExistsAsync("barbershop"))
+                {
+                    var userRole = new IdentityRole()
+                    {
+                        Name = "barbershop",
+                    };
+                    await _roleManager.CreateAsync(userRole);
+
+                }
+                var result = await _userManager.CreateAsync(identityUser, Password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(identityUser, "barbershop");
+                    return new ResponseDTO()
+                    {
+                        Message = "کاربر با موفقیت ایجاد شد",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = null
+                    };
+                }
+                else
+                {
+                    return new ResponseDTO()
+                    {
+                        Message = "مشکلی در ایجاد کاربر رخ داده است",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = new { role }
+                    };
+                }
+
+            }
             else
             {
                 return new ResponseDTO()
                 {
-                    Message = "There is no image.",
+                    Message = "There is problem while sending the data.",
                     IsSuccess = true,
                     StatusCode = StatusCodes.Status200OK,
                     Data = null
                 };
             }
-
         }
+        //else
+        //{
+        //    return new ResponseDTO()
+        //    {
+        //        Message = "There is no image.",
+        //        IsSuccess = true,
+        //        StatusCode = StatusCodes.Status200OK,
+        //        Data = null
+        //    };
+        //}
+
+
         public async Task<ResponseDTO> LoginAsync(string UserName, string Password)
         {
             var userExist = await _userManager.Users.FirstOrDefaultAsync(c => c.UserName == UserName);

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BarberShop.Feature.Command.BarberShop
 {
-    public record BarberShopCommand : IRequest<ResponseDTO>
+    public record BarberShopCommand() : IRequest<ResponseDTO>
     {
         [StringLength(150)]
         [Required]
@@ -18,7 +18,5 @@ namespace BarberShop.Feature.Command.BarberShop
         [StringLength(500)]
         [Required]
         public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public bool IsActive { get; set; }
     }
 }

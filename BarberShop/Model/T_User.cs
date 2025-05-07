@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BarberShop.Model
 {
@@ -18,6 +20,7 @@ namespace BarberShop.Model
 
         public Guid? T_BarberShop_ID { get; set; }
         [ForeignKey("T_BarberShop_ID")]
+        [JsonIgnore]
         public T_BarberShop? BarberShop { get; set; }
 
     }

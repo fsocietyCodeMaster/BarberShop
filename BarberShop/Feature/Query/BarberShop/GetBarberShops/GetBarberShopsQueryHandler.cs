@@ -6,15 +6,15 @@ namespace BarberShop.Feature.Query.Barber.GetBarberShop
 {
     public class GetBarberShopsQueryHandler : IRequestHandler<GetBarberShopsQuery, ResponseDTO>
     {
-        private readonly IBarber _barber;
+        private readonly IBarberShop _barberShop;
 
-        public GetBarberShopsQueryHandler(IBarber barber)
+        public GetBarberShopsQueryHandler(IBarberShop barberShop)
         {
-            _barber = barber;
+            _barberShop = barberShop;
         }
         public async Task<ResponseDTO> Handle(GetBarberShopsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _barber.GetAllBarberShopForBarbers();
+            var result = await _barberShop.GetAllAvailableBarberShops();
             return result;
         }
     }

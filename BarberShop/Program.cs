@@ -106,6 +106,7 @@ builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthentication,AuthService>();
 builder.Services.AddScoped<IUser,UserService>();
 builder.Services.AddScoped<IBarberShop,BarberShopService>();
