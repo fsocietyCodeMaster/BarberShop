@@ -2,7 +2,7 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace BarberShop.Feature.Command.BarberShop
+namespace BarberShop.Feature.Command.BarberShop.BarberShopForm
 {
     public record BarberShopCommand() : IRequest<ResponseDTO>
     {

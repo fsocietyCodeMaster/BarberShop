@@ -51,7 +51,7 @@ namespace BarberShop.UnitOfWork.Barber
             }
         }
 
-        public async Task<ResponseDTO> SelectBarberShop(Guid id)
+        public async Task<ResponseDTO> SelectBarberShop(string id)
         {
             var user = _httpContext;
             if (user.HttpContext.User.Identity.IsAuthenticated)

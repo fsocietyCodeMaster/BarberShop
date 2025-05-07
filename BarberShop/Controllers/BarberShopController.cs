@@ -1,5 +1,5 @@
 ﻿using BarberShop.DTO.ResponseResult;
-using BarberShop.Feature.Command.BarberShop;
+using BarberShop.Feature.Command.BarberShop.BarberShopForm;
 using BarberShop.Feature.Query.Barber.GetBarberShop;
 using BarberShop.Feature.Query.BarberShop.GetBarberById;
 using MediatR;

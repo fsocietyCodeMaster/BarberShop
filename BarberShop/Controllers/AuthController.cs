@@ -1,11 +1,8 @@
-﻿using Azure;
-using BarberShop.DTO.ResponseResult;
+﻿using BarberShop.DTO.ResponseResult;
 using BarberShop.Feature.Command.Auth.Login;
 using BarberShop.Feature.Command.User.CreateUser;
 using BarberShop.Repository;
-using BarberShop.UnitOfWork.User;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.Controllers

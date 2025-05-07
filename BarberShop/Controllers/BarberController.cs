@@ -1,10 +1,7 @@
 ﻿using BarberShop.DTO.ResponseResult;
-using BarberShop.Feature.Command.Barber;
-using BarberShop.Feature.Command.BarberShop;
-using BarberShop.Feature.Query.Barber.GetBarberShop;
+using BarberShop.Feature.Command.Barber.SelectBarberShop;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.Controllers
@@ -23,7 +20,7 @@ namespace BarberShop.Controllers
         }
         [HttpPost("selectbarbershop")]
         [Authorize(Roles = "barber")]
-        public async Task<IActionResult> SelectionOfBarberShop(Guid id)
+        public async Task<IActionResult> SelectionOfBarberShop(string id)
         {
             if (ModelState.IsValid)
             {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BarberShop.DTO.Barber;
 using BarberShop.DTO.BarberShop;
-using BarberShop.DTO.User;
 using BarberShop.Model;
 
 namespace BarberShop.Mapping

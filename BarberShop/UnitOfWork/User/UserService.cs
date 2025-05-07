@@ -1,5 +1,7 @@
-﻿using Azure;
+﻿using AutoMapper;
+using Azure;
 using BarberShop.Context;
+using BarberShop.DTO.Barber;
 using BarberShop.DTO.ResponseResult;
 using BarberShop.DTO.User;
 using BarberShop.Model;
@@ -14,11 +16,13 @@ namespace BarberShop.UnitOfWork.User
     {
         private readonly BarberShopDbContext _context;
         private readonly UserManager<T_User> _userManager;
+        private readonly IMapper _mapper;
 
-        public UserService(BarberShopDbContext context, UserManager<T_User> userManager)
+        public UserService(BarberShopDbContext context, UserManager<T_User> userManager, IMapper mapper)
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         public async Task<ResponseDTO> DeleteUserAsync(Guid id)
@@ -103,7 +107,7 @@ namespace BarberShop.UnitOfWork.User
                 };
                 return success;
             }
-           else if (userRole == "barber")
+            else if (userRole == "barber")
             {
                 var success = new ResponseDTO
                 {
@@ -123,7 +127,7 @@ namespace BarberShop.UnitOfWork.User
                 };
                 return success;
             }
-           else if (userRole == "barbershop")
+            else if (userRole == "barbershop")
             {
                 var success = new ResponseDTO
                 {
@@ -146,11 +150,37 @@ namespace BarberShop.UnitOfWork.User
                 return new ResponseDTO()
                 {
                     Message = "There is problem while sending the data.",
-                    IsSuccess = true,
+                    IsSuccess = false,
                     StatusCode = StatusCodes.Status200OK,
                     Data = null
                 };
             }
+
+        }
+
+        public async Task<ResponseDTO> SelectBarber(string id)
+        {
+            var barberExist = await _context.T_Users.FirstOrDefaultAsync(c => c.Id == id);
+            if (barberExist != null)
+            {
+                var barber = _mapper.Map<BarberInfoDTO>(barberExist);
+                var success = new ResponseDTO
+                {
+                    Message = "Barber is retrieved successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = barber
+                };
+                return success;
+            }
+            return new ResponseDTO()
+            {
+                Message = "No barber found.",
+                IsSuccess = false,
+                StatusCode = StatusCodes.Status200OK,
+                Data = null
+            };
+
 
         }
 
