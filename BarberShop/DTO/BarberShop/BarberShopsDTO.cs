@@ -1,4 +1,5 @@
-﻿using BarberShop.DTO.User;
+﻿using BarberShop.DTO.Barber;
+using BarberShop.DTO.User;
 using BarberShop.Model;
 
 namespace BarberShop.DTO.BarberShop
@@ -13,6 +14,6 @@ namespace BarberShop.DTO.BarberShop
         public bool IsActive { get; set; }
         public string OwnerId { get; set; }
 
-        public List<UserInfoDTO> Barbers { get; set; } = new List<UserInfoDTO>();
+        public List<BarberInfoDTO> Barbers { get; set; } = new List<BarberInfoDTO>();
     }
 }

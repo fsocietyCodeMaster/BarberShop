@@ -10,8 +10,8 @@ namespace BarberShop.Mapping
     {
         public MappingData()
         {
-            CreateMap<T_BarberShop, BarberShopsDTO>().ForMember(dest => dest.Barbers, opt => opt.MapFrom(src => src.Barbers));
-            CreateMap<T_User, UserInfoDTO>();
+            CreateMap<T_BarberShop, BarberShopsDTO>();
+            CreateMap<T_User, BarberInfoDTO>();
         }
     }
 }
