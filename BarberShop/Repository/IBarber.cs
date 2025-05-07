@@ -4,6 +4,6 @@ namespace BarberShop.Repository
 {
     public interface IBarber
     {
-        Task<ResponseDTO> GetAllBarberShopForBarbers();
+        Task<ResponseDTO> SelectBarberShop(Guid id);
     }
 }

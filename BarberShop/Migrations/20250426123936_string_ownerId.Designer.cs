@@ -4,6 +4,7 @@ using BarberShop.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberShop.Migrations
 {
     [DbContext(typeof(BarberShopDbContext))]
-    partial class BarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426123936_string_ownerId")]
+    partial class string_ownerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +31,8 @@ namespace BarberShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AppointmentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("AppointmentDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -46,13 +49,13 @@ namespace BarberShop.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("T_Barber_ID")
+                    b.Property<string>("T_User_ID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID_Appointment");
 
-                    b.HasIndex("T_Barber_ID");
+                    b.HasIndex("T_User_ID");
 
                     b.ToTable("T_Appointments");
                 });
@@ -325,7 +328,7 @@ namespace BarberShop.Migrations
                 {
                     b.HasOne("BarberShop.Model.T_User", "User")
                         .WithMany()
-                        .HasForeignKey("T_Barber_ID")
+                        .HasForeignKey("T_User_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

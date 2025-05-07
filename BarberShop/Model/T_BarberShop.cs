@@ -24,8 +24,8 @@ namespace BarberShop.Model
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
 
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
   
-        public List<T_User> Barbers { get; set; } = new List<T_User>();
+        public ICollection<T_User> Barbers { get; set; } = new List<T_User>();
     }
 }

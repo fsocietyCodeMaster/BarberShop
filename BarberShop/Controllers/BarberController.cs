@@ -1,4 +1,5 @@
 ﻿using BarberShop.DTO.ResponseResult;
+using BarberShop.Feature.Command.Barber;
 using BarberShop.Feature.Command.BarberShop;
 using BarberShop.Feature.Query.Barber.GetBarberShop;
 using MediatR;
@@ -20,15 +21,15 @@ namespace BarberShop.Controllers
             _sender = sender;
             _logger = logger;
         }
-        [HttpGet("barbershoplists")]
-        [Authorize(Roles ="barber")]
-        public async Task<IActionResult> BarberShopLists()
+        [HttpPost("selectbarbershop")]
+        [Authorize(Roles = "barber")]
+        public async Task<IActionResult> SelectionOfBarberShop(Guid id)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var result = await _sender.Send(new GetBarberShopsQuery ());
+                    var result = await _sender.Send(new SelectBarberShopCommand(id));
                     if (result.IsSuccess)
                     {
                         return Ok(result);
@@ -58,5 +59,6 @@ namespace BarberShop.Controllers
             }
 
         }
+
     }
 }

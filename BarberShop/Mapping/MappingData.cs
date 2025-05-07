@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BarberShop.DTO.Barber;
+using BarberShop.DTO.BarberShop;
+using BarberShop.DTO.User;
 using BarberShop.Model;
 
 namespace BarberShop.Mapping
@@ -8,7 +10,8 @@ namespace BarberShop.Mapping
     {
         public MappingData()
         {
-            CreateMap<T_BarberShop, GetAllBarberShopsDTO>();
+            CreateMap<T_BarberShop, BarberShopsDTO>().ForMember(dest => dest.Barbers, opt => opt.MapFrom(src => src.Barbers));
+            CreateMap<T_User, UserInfoDTO>();
         }
     }
 }
