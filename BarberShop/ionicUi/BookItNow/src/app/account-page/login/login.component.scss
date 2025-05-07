@@ -1,9 +1,8 @@
-form ion-item
-{
-    direction: rtl;
+form ion-item {
+  direction: rtl;
 }
 
-.register-form {
+.login-form {
   ion-item {
     margin-top: 12px;
     border-radius: 12px;
@@ -26,28 +25,13 @@ form ion-item
 }
 
 .radio-wrapper {
-  direction: rtl!important;
+  direction: rtl !important;
 }
 
 ion-select {
   display: flex;
   direction: ltr;
 }
-
-.position-relative {
-  position: relative;
-}
-
-.alert {
-  position: absolute;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  bottom: 0;
-  left: 20%;
-  color: red;
-}
-
 
 //.rtl-select {
 //  direction: rtl;

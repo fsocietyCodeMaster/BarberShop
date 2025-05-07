@@ -20,31 +20,44 @@ import { IonicModule } from '@ionic/angular';
 })
 export class RegisterComponent implements OnInit {
 
+  registerForm!: FormGroup;
 
-  userForm!: FormGroup;
   user_type = [
-    { id: '1', name: 'صاحب آرایشگاه' },
-    { id: '2', name: 'مشتری' },
-    { id: '3', name: 'آرایشگر' },
+    { id: '1', name: 'صاحب آرایشگاه', role: 'barbershop' },
+    { id: '2', name: 'مشتری', role: 'user' },
+    { id: '3', name: 'آرایشگر', role: 'barber' },
   ];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.registerForm = fb.group({
+      'UserName': '',
+      'Password': ['', Validators.required],
+      'FullName': ['', Validators.required],
+      'PhoneNumber': ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      //'ImageUrl': ['', Validators.required],
+      'Role': ['', Validators.required],
+    })
+  }
 
   ngOnInit() {
-    this.userForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.maxLength(60)]],
-      bio: [''],
-      imageUrl: [''],
-      startTime: [''],
-      endTime: [''],
-      isActive: [false],
-      barberShopId: ['']
-    });
+
+  }
+
+  allowOnlyNumbers(event: any) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
   }
 
   onSubmit() {
-    if (this.userForm.valid) {
-      console.log('فرم ارسال شد:', this.userForm.value);
+    if (this.registerForm.valid) {
+      console.log('فرم ارسال شد:', this.registerForm.value);
+    }
+    if (this.registerForm.invalid) {
+      Object.keys(this.registerForm.controls).forEach(field => {
+        const control = this.registerForm.get(field);
+        control?.markAsTouched({ onlySelf: true });
+      });
+      return;
     }
   }
 }
