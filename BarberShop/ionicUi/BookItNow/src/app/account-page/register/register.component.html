@@ -50,29 +50,60 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="register-form">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
 
     <!-- Full Name -->
     <ion-item fill="outline">
       <ion-icon name="person-outline" slot="start"></ion-icon>
       <ion-label position="floating">نام </ion-label>
-      <ion-input formControlName="fullName"></ion-input>
+      <ion-input formControlName="FullName"></ion-input>
+      <div *ngIf="registerForm.get('FullName')?.invalid && (registerForm.get('FullName')?.dirty || registerForm.get('FullName')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="registerForm.get('FullName')?.hasError('required')">
+          <small>وارد کردن نام الزامی است </small>
+        </div>
+      </div>
     </ion-item>
 
     <!-- Username -->
     <ion-item fill="outline">
       <ion-icon name="person-circle-outline" slot="start">></ion-icon>
       <ion-label position="floating">نام کاربری</ion-label>
-      <ion-input formControlName="fullName"></ion-input>
+      <ion-input formControlName="UserName"></ion-input>
     </ion-item>
 
-    <!-- Image -->
-    <ion-item fill="outline">
+    <!-- PhoneNumber -->
+    <ion-item fill="outline" class="position-relative">
       <ion-icon name="call-outline" slot="start"></ion-icon>
       <ion-label position="floating"> موبایل</ion-label>
-      <ion-input dir="ltr" formControlName="imageUrl"></ion-input>
+      <ion-input type="tel" dir="ltr" inputmode="numeric" (ionInput)="allowOnlyNumbers($event)"
+                 formControlName="PhoneNumber"></ion-input>
+      <div *ngIf="registerForm.get('PhoneNumber')?.invalid && (registerForm.get('PhoneNumber')?.dirty || registerForm.get('PhoneNumber')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="registerForm.get('PhoneNumber')?.hasError('required')">
+          <small>وارد کردن موبایل الزامی است </small>
+        </div>
+        <div class="text-center" *ngIf="registerForm.get('PhoneNumber')?.hasError('minlength')">
+          <small>شماره موبایل باید حداقل 11 رقم باشد.</small>
+        </div>
+        <div class="text-center" *ngIf="registerForm.get('PhoneNumber')?.hasError('maxlength')">
+          <small>شماره موبایل باید حداکثر 11 رقم باشد.</small>
+        </div>
+      </div>
     </ion-item>
 
+    <!-- Password -->
+    <ion-item fill="outline" class="position-relative">
+      <ion-icon name="key-outline" slot="start"></ion-icon>
+      <ion-label position="floating"> رمز عبور</ion-label>
+      <ion-input dir="ltr" formControlName="Password"></ion-input>
+      <div *ngIf="registerForm.get('Password')?.invalid && (registerForm.get('Password')?.dirty || registerForm.get('Password')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="registerForm.get('Password')?.hasError('required')">
+          <small>وارد کردن رمز عبور الزامی است </small>
+        </div>
+      </div>
+    </ion-item>
 
 
     <!-- Is Active -->
@@ -84,26 +115,26 @@
     <ion-item fill="outline">
       <ion-icon name="megaphone-outline" slot="start"></ion-icon>
       <ion-label position="floating">وضعیت کاربر </ion-label>
-      <!--<ion-select dir="ltr" formControlName="barberShopId" interface="popover">-->
-      <!--<ion-select-option *ngFor="let shop of user_type" [value]="shop.id">
-        {{ shop.name }}
-      </ion-select-option>-->
 
-
-      <ion-select class="rtl-select"  aria-label="Favorite Fruit" value="">
-        <ion-select-option *ngFor="let shop of user_type">
-          {{ shop.name }}
+      <ion-select class="rtl-select" aria-label="Favorite Fruit" value="" formControlName="Role">
+        <ion-select-option *ngFor="let user of user_type" [value]="user.role">
+          {{ user.name }}
         </ion-select-option>
       </ion-select>
-
-      <!--</ion-select>-->
+      <div *ngIf="registerForm.get('Role')?.invalid && (registerForm.get('Role')?.dirty || registerForm.get('Role')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="registerForm.get('Role')?.hasError('required')">
+          <small>وارد کردن وضعیت کاربر الزامی است </small>
+        </div>
+      </div>
     </ion-item>
 
     <!-- Submit Button -->
-    <ion-button expand="block" type="submit" [disabled]="userForm.invalid" color="primary" class="ion-margin-top">
+    <ion-button expand="block" type="submit" color="primary" class="ion-margin-top">
       ثبت‌نام
     </ion-button>
 
   </form>
 </ion-content>
 <!--</ion-page>-->
+<!--[disabled]="registerForm.invalid"-->

@@ -1,0 +1,43 @@
+
+<!--<ion-page>-->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title slot="end">ورود</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+    <!-- Full Name -->
+    <ion-item fill="outline">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">نام </ion-label>
+      <ion-input formControlName="fullName"></ion-input>
+    </ion-item>
+
+    <!-- Username -->
+    <ion-item fill="outline">
+      <ion-icon name="person-circle-outline" slot="start">></ion-icon>
+      <ion-label position="floating">نام کاربری</ion-label>
+      <ion-input formControlName="fullName"></ion-input>
+    </ion-item>
+
+   
+
+    <!-- Password -->
+    <ion-item fill="outline">
+      <ion-icon name="call-outline" slot="start"></ion-icon>
+      <ion-label position="floating"> رمز عبور</ion-label>
+      <ion-input dir="ltr" formControlName="Password"></ion-input>
+    </ion-item>
+
+
+    <!-- Submit Button -->
+    <ion-button expand="block" type="submit" [disabled]="loginForm.invalid" color="primary" class="ion-margin-top">
+      ثبت‌نام
+    </ion-button>
+
+  </form>
+</ion-content>
+<!--</ion-page>-->
