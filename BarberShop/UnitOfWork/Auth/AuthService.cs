@@ -175,7 +175,7 @@ namespace BarberShop.UnitOfWork.User
                         Message = "کاربر با موفقیت ایجاد شد",
                         IsSuccess = true,
                         StatusCode = StatusCodes.Status200OK,
-                        Data = null
+                        Data = new { role }
                     };
                 }
                 else
@@ -185,7 +185,7 @@ namespace BarberShop.UnitOfWork.User
                         Message = "مشکلی در ایجاد کاربر رخ داده است",
                         IsSuccess = true,
                         StatusCode = StatusCodes.Status200OK,
-                        Data = new { role }
+                        Data = null
                     };
                 }
 
