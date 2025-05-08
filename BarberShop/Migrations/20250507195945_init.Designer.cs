@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberShop.Migrations
 {
     [DbContext(typeof(BarberShopDbContext))]
-    [Migration("20250418193226_addIsActive")]
-    partial class addIsActive
+    [Migration("20250507195945_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,8 +31,8 @@ namespace BarberShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateOnly>("AppointmentDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -49,13 +49,13 @@ namespace BarberShop.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("T_User_ID")
+                    b.Property<string>("T_Barber_ID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID_Appointment");
 
-                    b.HasIndex("T_User_ID");
+                    b.HasIndex("T_Barber_ID");
 
                     b.ToTable("T_Appointments");
                 });
@@ -87,16 +87,15 @@ namespace BarberShop.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("T_User_ID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ID_Barbershop");
-
-                    b.HasIndex("T_User_ID");
 
                     b.ToTable("T_BarberShops");
                 });
@@ -167,15 +166,15 @@ namespace BarberShop.Migrations
                     b.Property<TimeSpan?>("StartTime")
                         .HasColumnType("time");
 
+                    b.Property<Guid?>("T_BarberShop_ID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("UserRole")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -186,6 +185,8 @@ namespace BarberShop.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("T_BarberShop_ID");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -327,20 +328,20 @@ namespace BarberShop.Migrations
                 {
                     b.HasOne("BarberShop.Model.T_User", "User")
                         .WithMany()
-                        .HasForeignKey("T_User_ID")
+                        .HasForeignKey("T_Barber_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BarberShop.Model.T_BarberShop", b =>
+            modelBuilder.Entity("BarberShop.Model.T_User", b =>
                 {
-                    b.HasOne("BarberShop.Model.T_User", "User")
-                        .WithMany()
-                        .HasForeignKey("T_User_ID");
+                    b.HasOne("BarberShop.Model.T_BarberShop", "BarberShop")
+                        .WithMany("Barbers")
+                        .HasForeignKey("T_BarberShop_ID");
 
-                    b.Navigation("User");
+                    b.Navigation("BarberShop");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -392,6 +393,11 @@ namespace BarberShop.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BarberShop.Model.T_BarberShop", b =>
+                {
+                    b.Navigation("Barbers");
                 });
 #pragma warning restore 612, 618
         }

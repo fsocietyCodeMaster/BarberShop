@@ -28,4 +28,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ionicUi\BookItNow\src\app\models\" />
+    <Folder Include="ionicUi\BookItNow\src\app\services\" />
+  </ItemGroup>
+
 </Project>
