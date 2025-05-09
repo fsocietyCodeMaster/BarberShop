@@ -53,7 +53,7 @@ export class LoginComponent  implements OnInit {
       this.userservice.login(this.loginForm.value)
         .subscribe((data: any) => {
           console.log("data of register: ", data);
-          this.router.navigate(['/tabs/tab2']);
+          this.router.navigate(['/tabs/tab1']);
         });
 
     }
