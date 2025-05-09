@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  BASE_URL = 'https://localhost:7148/api/Auth/register';
+  BASE_URL = 'https://localhost:7148/api/';
 
   constructor(private http: HttpClient,
     private router: Router) {
@@ -15,8 +15,15 @@ export class UserService {
 
 
   public register(userRegisterData: any) {
-    return this.http.post(this.BASE_URL, userRegisterData)
+    return this.http.post(this.BASE_URL + 'Auth/register', userRegisterData)
+  }
+
+  public login(userRegisterData: any) {
+    return this.http.post(this.BASE_URL + 'Auth/login', userRegisterData)
   }
 
 
 }
+
+//password ---------------
+//Puya@2000

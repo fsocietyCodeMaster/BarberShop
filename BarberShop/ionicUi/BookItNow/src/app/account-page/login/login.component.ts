@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,12 +26,12 @@ export class LoginComponent  implements OnInit {
     { id: '3', name: 'آرایشگر', role: 'barber' },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private userservice: UserService,
+    private router: Router,) {
     this.loginForm = fb.group({
       'UserName': '',
-      'Password': '',
-      'FullName': ['', Validators.required],
-      'PhoneNumber': '',
+      'Password': ''
     })
   }
 
@@ -48,6 +50,11 @@ export class LoginComponent  implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('فرم صحیح است:', this.loginForm.value);
+      this.userservice.login(this.loginForm.value)
+        .subscribe((data: any) => {
+          console.log("data of register: ", data);
+          this.router.navigate(['/tabs/tab1']);
+        });
 
     }
   }

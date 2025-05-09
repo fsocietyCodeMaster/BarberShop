@@ -108,9 +108,9 @@
 
     <!-- Is Active -->
     <!--<ion-item lines="none" class="switch-item">
-      <ion-label>فعال</ion-label>
-      <ion-toggle formControlName="isActive" slot="end" color="success"></ion-toggle>
-    </ion-item>-->
+    <ion-label>فعال</ion-label>
+    <ion-toggle formControlName="isActive" slot="end" color="success"></ion-toggle>
+  </ion-item>-->
     <!-- User type -->
     <ion-item fill="outline">
       <ion-icon name="megaphone-outline" slot="start"></ion-icon>
@@ -129,6 +129,22 @@
       </div>
     </ion-item>
 
+    <!-- Address -->
+    <!--<ion-item fill="outline">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">آدرس </ion-label>
+      <ion-input formControlName="FullName"></ion-input>
+      <div *ngIf="registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="registerForm.get('address')?.hasError('required')">
+          <small>وارد کردن آدرس الزامی است </small>
+        </div>
+      </div>
+    </ion-item>-->
+
+
+
+
     <!-- Submit Button -->
     <ion-button expand="block" type="submit" color="primary" class="ion-margin-top">
       ثبت‌نام
@@ -136,5 +152,7 @@
 
   </form>
 </ion-content>
+
+
 <!--</ion-page>-->
 <!--[disabled]="registerForm.invalid"-->
