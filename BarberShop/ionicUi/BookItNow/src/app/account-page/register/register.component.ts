@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
 //import { IonContent, IonHeader, IonItem, IonTitle, IonToolbar, IonLabel } from '@ionic/angular/standalone';
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-register',
@@ -31,6 +33,7 @@ export class RegisterComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder,
+    private router: Router,
     private http: HttpClient,
     private userservice: UserService
   ) {
@@ -41,10 +44,20 @@ export class RegisterComponent implements OnInit {
       'PhoneNumber': ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       //'ImageUrl': ['', Validators.required],
       'Role': ['', Validators.required],
+
     })
   }
 
+  barbershop: any;
+
   ngOnInit() {
+
+    this.barbershop = {
+      "name": "string",
+      "address": "string",
+      "phone": "string",
+      "description": "string"
+    }
 
   }
 
@@ -56,16 +69,14 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.registerForm.valid) {
       console.log('فرم ارسال شد:', this.registerForm.value);
-      //this.userservice.register(this.registerForm.value)
-      //  .subscribe((data: any) => {
-      //    console.log("data of register: ", data)
-      //  });
-
-      this.http.post('https://localhost:7148/api/Auth/register',this.registerForm.value)
+      this.userservice.register(this.registerForm.value)
         .subscribe((data: any) => {
-          console.log("data of register: ", data)
+          console.log("data of register: ", data);
+          console.log("this.registerForm.value.Role: ", this.registerForm.value.Role);
+          localStorage.setItem('Role', this.registerForm.value.Role);
+          this.router.navigate(['/login']);
         });
-      
+
     }
     if (this.registerForm.invalid) {
       Object.keys(this.registerForm.controls).forEach(field => {
