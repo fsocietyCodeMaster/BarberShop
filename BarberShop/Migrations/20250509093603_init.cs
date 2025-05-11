@@ -34,6 +34,7 @@ namespace BarberShop.Migrations
                     Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     OwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false)

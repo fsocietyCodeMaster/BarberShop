@@ -272,7 +272,7 @@ namespace BarberShop.UnitOfWork.User
                 IsSuccess = true,
                 //Role = userRole.FirstOrDefault(),
                 StatusCode = StatusCodes.Status200OK,
-                Data = null
+                Data = new {UserRole = userRole}
             };
         }
         public ResponseDTO GetRoles()

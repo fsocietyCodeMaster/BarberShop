@@ -21,6 +21,8 @@ namespace BarberShop.Model
         [StringLength(500)]
         [Required]
         public string Description { get; set; }
+
+        public string? ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
 
