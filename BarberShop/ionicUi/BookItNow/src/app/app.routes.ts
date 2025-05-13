@@ -7,6 +7,14 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'tabs-client',
+    loadChildren: () => import('./tabs-client/tabs-client/tabs-client.routes').then(m => m.routes),
+  },
+  {
+    path: 'tabs-barbershop',
+    loadChildren: () => import('./tabs-barbershop/tabs-barbershop/tabs-barbershop.routes').then(m => m.routes),
+  },
+  {
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },

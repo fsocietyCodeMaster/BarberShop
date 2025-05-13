@@ -6,20 +6,102 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-content class="ion-padding">
+  <!--<ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header>-->
 
   <div dir="rtl">
-    <div class="price-content-header">
+    <div class="barbershop-content-header">
       <!--<img src="../assets/images/gold1.jpg" style="width: 25px; height: 20px;" alt="">-->
       <p class="text-gold">سلام شما بعنوان صاحب آرایشگاه وارد برنامه شده اید</p>
       <p class="text-gold">لطفا فرم زیر را کامل کنید</p>
     </div>
   </div>
 
-    <!--<app-explore-container name="Tab 1 page"></app-explore-container>-->
+  <form [formGroup]="barbershopForm" (ngSubmit)="onSubmit()" class="register-form">
+
+    <!-- Name -->
+    <ion-item fill="outline">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">نام </ion-label>
+      <ion-input formControlName="Name"></ion-input>
+      <div *ngIf="barbershopForm.get('Name')?.invalid && (barbershopForm.get('Name')?.dirty || barbershopForm.get('Name')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="barbershopForm.get('Name')?.hasError('required')">
+          <small>وارد کردن نام الزامی است </small>
+        </div>
+      </div>
+    </ion-item>
+
+    <!-- Description -->
+    <ion-item fill="outline">
+      <ion-icon name="person-circle-outline" slot="start">></ion-icon>
+      <ion-label position="floating"> توضییحات</ion-label>
+      <ion-input formControlName="Description"></ion-input>
+    </ion-item>
+
+    <!-- PhoneNumber -->
+    <ion-item fill="outline" class="position-relative">
+      <ion-icon name="call-outline" slot="start"></ion-icon>
+      <ion-label position="floating"> موبایل</ion-label>
+      <ion-input type="tel" dir="ltr" inputmode="numeric" (ionInput)="allowOnlyNumbers($event)"
+                 formControlName="Phone"></ion-input>
+      <div *ngIf="barbershopForm.get('Phone')?.invalid && (barbershopForm.get('Phone')?.dirty || barbershopForm.get('Phone')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="barbershopForm.get('Phone')?.hasError('required')">
+          <small>وارد کردن موبایل الزامی است </small>
+        </div>
+        <div class="text-center" *ngIf="barbershopForm.get('Phone')?.hasError('minlength')">
+          <small>شماره موبایل باید حداقل 11 رقم باشد.</small>
+        </div>
+        <div class="text-center" *ngIf="barbershopForm.get('Phone')?.hasError('maxlength')">
+          <small>شماره موبایل باید حداکثر 11 رقم باشد.</small>
+        </div>
+      </div>
+    </ion-item>
+
+    <!-- Description -->
+    <!--<ion-item fill="outline" class="position-relative">
+      <ion-icon name="key-outline" slot="start"></ion-icon>
+      <ion-label position="floating"> رمز عبور</ion-label>
+      <ion-input dir="ltr" formControlName="Description"></ion-input>
+      <div *ngIf="barbershopForm.get('Description')?.invalid && (barbershopForm.get('Description')?.dirty || barbershopForm.get('Description')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="barbershopForm.get('Description')?.hasError('required')">
+          <small>وارد کردن توضییحات الزامی است </small>
+        </div>
+      </div>
+    </ion-item>-->
+
+
+    <!--Is Active-->
+    <!--<ion-item lines="none" class="switch-item">
+      <ion-label>فعال</ion-label>
+      <ion-toggle formControlName="IsActive" slot="end" color="success"></ion-toggle>
+    </ion-item>-->
+  
+    <!-- Address -->
+    <ion-item fill="outline">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">آدرس </ion-label>
+      <ion-input formControlName="Address"></ion-input>
+      <div *ngIf="barbershopForm.get('Address')?.invalid && (barbershopForm.get('Address')?.dirty || barbershopForm.get('Address')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="barbershopForm.get('Address')?.hasError('required')">
+          <small>وارد کردن آدرس الزامی است </small>
+        </div>
+      </div>
+    </ion-item>
+
+
+    <!-- Submit Button -->
+    <ion-button expand="block" type="submit" color="primary" class="ion-margin-top">
+      ثبت‌نام آرایشگاه
+    </ion-button>
+
+  </form>
+
 </ion-content>
