@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
   ],
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
 
@@ -53,7 +53,15 @@ export class LoginComponent  implements OnInit {
       this.userservice.login(this.loginForm.value)
         .subscribe((data: any) => {
           console.log("data of register: ", data);
-          this.router.navigate(['/tabs/tab1']);
+          console.log("data of isSuccess: ", data.isSuccess);
+          console.log("data of message: ", data.message);
+          if (data.isSuccess == true) {
+            localStorage.setItem('token', data.message);
+            //localStorage.setItem('token', JSON.stringify(data.message));
+            document.cookie = `token=${data.message}; path=/; max-age=3600; secure; samesite=strict`;
+
+            this.router.navigate(['/tabs-client']);
+          }
         });
 
     }

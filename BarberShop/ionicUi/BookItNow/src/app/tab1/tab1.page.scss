@@ -1,3 +1,9 @@
+.barbershop-content-header{
+    color: green;
+    //display: flex;
+    text-align: center;
+}
+
 form ion-item {
   direction: rtl;
 }
@@ -48,7 +54,11 @@ ion-select {
 }
 
 
-.price-content-header{
-    text-align: center;
-    color: darkgreen;
-}
+//.rtl-select {
+//  direction: rtl;
+
+//  ion-select-option {
+//    text-align: right !important;
+//  }
+//}
+

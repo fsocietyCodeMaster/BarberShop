@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 export class UserService {
 
   BASE_URL = 'https://localhost:7148/api/';
+
+  //'https://localhost:7148/api/BarberShop/barbershop' 
 
   constructor(private http: HttpClient,
     private router: Router) {
@@ -20,6 +22,11 @@ export class UserService {
 
   public login(userRegisterData: any) {
     return this.http.post(this.BASE_URL + 'Auth/login', userRegisterData)
+  }
+
+  public create_barbershop(barbershopData: any) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.post(this.BASE_URL + 'BarberShop/barbershop', barbershopData, { headers: headers })
   }
 
 
