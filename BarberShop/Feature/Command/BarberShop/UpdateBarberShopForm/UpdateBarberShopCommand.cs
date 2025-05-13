@@ -2,9 +2,9 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace BarberShop.Feature.Command.BarberShop.BarberShopForm
+namespace BarberShop.Feature.Command.BarberShop.UpdateBarberShopForm
 {
-    public record BarberShopCommand() : IRequest<ResponseDTO>
+    public record UpdateBarberShopCommand(Guid id) : IRequest<ResponseDTO>
     {
         [StringLength(150)]
         [Required]

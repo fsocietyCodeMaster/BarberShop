@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberShop.Migrations
 {
     [DbContext(typeof(BarberShopDbContext))]
-    [Migration("20250507195945_init")]
+    [Migration("20250509093603_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -78,6 +78,9 @@ namespace BarberShop.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

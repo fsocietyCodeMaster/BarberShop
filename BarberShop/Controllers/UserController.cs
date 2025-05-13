@@ -1,13 +1,10 @@
 ﻿using BarberShop.DTO.ResponseResult;
-using BarberShop.Feature.Command.Barber.SelectBarberShop;
-using BarberShop.Feature.Command.User.CreateUser;
 using BarberShop.Feature.Command.User.DeleteUser;
 using BarberShop.Feature.Command.User.SelectBarber;
 using BarberShop.Feature.Command.User.UpdateUser;
 using BarberShop.Feature.Query.User.GetUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.Controllers

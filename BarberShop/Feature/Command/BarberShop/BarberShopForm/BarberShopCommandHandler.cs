@@ -14,7 +14,7 @@ namespace BarberShop.Feature.Command.BarberShop.BarberShopForm
         }
         public async Task<ResponseDTO> Handle(BarberShopCommand request, CancellationToken cancellationToken)
         {
-            var result = await _barberShop.ShopForm(request.Name, request.Address, request.Phone, request.Description);
+            var result = await _barberShop.ShopForm(request.Name, request.Address, request.Phone, request.Description,request.ImageUrl);
             if (result != null)
             {
                 return result;

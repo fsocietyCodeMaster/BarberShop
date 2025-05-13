@@ -4,9 +4,9 @@ namespace BarberShop.Repository
 {
     public interface IBarberShop
     {
-        Task<ResponseDTO> ShopForm(string Name, string Address, string Phone, string Description);
+        Task<ResponseDTO> ShopForm(string Name, string Address, string Phone, string Description, IFormFile ImageUrl);
         Task<ResponseDTO> GetAllAvailableBarberShops();
         Task<ResponseDTO> GetAvailableBarberShop(Guid id);
-
+        Task<ResponseDTO> UpdateBarberShopForm(Guid id,string Name,string Address, string Phone, string Description,IFormFile ImageUrl);
     }
 }
