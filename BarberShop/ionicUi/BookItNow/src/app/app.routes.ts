@@ -30,6 +30,10 @@ export const routes: Routes = [
     path: 'createBarbershop',
     loadComponent: () => import('./account-page/create-barbershop/create-barbershop.component').then((m) => m.CreateBarbershopComponent),
   },
+  {
+    path: 'choiceBarbershop',
+    loadComponent: () => import('./account-page/choice-barbershop/choice-barbershop.component').then((m) => m.ChoiceBarbershopComponent),
+  },
 
   
 ];

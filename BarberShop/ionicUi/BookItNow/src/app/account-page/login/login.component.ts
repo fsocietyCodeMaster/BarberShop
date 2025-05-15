@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
             } else if (data.data['userRole'][0] == "user") {
               this.router.navigate(['/tabs']);
             } else if (data.data['userRole'][0] == "barber") {
-              this.router.navigate(['/tabs-barber']);
+              this.router.navigate(['/choiceBarbershop']);
             }
             document.cookie = `token=${data.message}; path=/; max-age=3600; secure; samesite=strict`;
 

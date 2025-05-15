@@ -73,6 +73,7 @@ export class CreateBarbershopComponent  implements OnInit {
     this.userservice.create_barbershop(formData).subscribe((data: any) => {
       console.log("data of register: ", data);
       if (data.isSuccess == true) {
+        localStorage.setItem('Role', 'barbershop');
         this.router.navigate(['/tabs-barbershop']);
       }
     })

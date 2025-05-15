@@ -31,7 +31,7 @@ export class UserService {
 
   public barbershop_list() {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.post(this.BASE_URL + 'BarberShop/barbershoplists', { headers: headers })
+    return this.http.get(this.BASE_URL + 'BarberShop/barbershoplists', { headers: headers })
   }
 
 
