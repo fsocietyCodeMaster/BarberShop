@@ -22,45 +22,12 @@ import { UserService } from '../services/user.service';
   ],
 })
 export class Tab1Page {
-  constructor(private fb: FormBuilder,    
+  constructor(private fb: FormBuilder,
     private userservice: UserService,
     private router: Router,
     private http: HttpClient) {
-    this.barbershopForm = fb.group({
-      'Name': '',
-      'Address': ['', Validators.required],
-      'Description': ['', Validators.required],
-      'Phone': ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      //'CreatedAt': [''],
-      //'IsActive': [true],
-
-    })
+   
   }
-
-  barbershopForm!: FormGroup;
-
-
-  barber_shop = {
-    "name": "string",
-    "address": "string",
-    "phone": "string",
-    "description": "string"
-  };
-
-  onSubmit() {
-    console.log('barbershopForm: ', this.barbershopForm.value);
-
-    console.log("i am in barber form");
-    this.userservice.create_barbershop(this.barbershopForm.value).subscribe((data: any) => {
-      console.log("data of register: ", data);
-    })
-  }
-
-  allowOnlyNumbers(event: any) {
-    const input = event.target as HTMLInputElement;
-    input.value = input.value.replace(/[^0-9]/g, '');
-  }
-
 
 
 }

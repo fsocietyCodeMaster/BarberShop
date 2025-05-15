@@ -52,15 +52,22 @@ export class LoginComponent implements OnInit {
       console.log('فرم صحیح است:', this.loginForm.value);
       this.userservice.login(this.loginForm.value)
         .subscribe((data: any) => {
-          console.log("data of register: ", data);
+          console.log("data of login: ", data);
           console.log("data of isSuccess: ", data.isSuccess);
+          console.log("userRole[0]: ", data.data['userRole'][0]);          
           console.log("data of message: ", data.message);
           if (data.isSuccess == true) {
             localStorage.setItem('token', data.message);
             //localStorage.setItem('token', JSON.stringify(data.message));
+            if (data.data['userRole'][0] == "barbershop") {
+              this.router.navigate(['/createBarbershop']);
+            } else if (data.data['userRole'][0] == "user") {
+              this.router.navigate(['/tabs']);
+            } else if (data.data['userRole'][0] == "barber") {
+              this.router.navigate(['/tabs-barber']);
+            }
             document.cookie = `token=${data.message}; path=/; max-age=3600; secure; samesite=strict`;
 
-            this.router.navigate(['/tabs-client']);
           }
         });
 
