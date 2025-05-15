@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title slot="end">انتخاب آرایشگاه</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="choiceBarbershopForm" (ngSubmit)="onSubmit()" class="register-form">
+    <!-- User type -->
+    <ion-item fill="outline">
+      <ion-icon name="megaphone-outline" slot="start"></ion-icon>
+      <ion-label position="floating">انتخاب آرایشگاه</ion-label>
+
+      <ion-select *ngIf="barbershops_list" class="rtl-select" aria-label="Favorite Fruit" value="" formControlName="barbershopId">
+        <ion-select-option *ngFor="let barbershop of barbershops_list" [value]="barbershop.iD_Barbershop">
+          {{ barbershop.name }}
+        </ion-select-option>
+      </ion-select>
+      <div *ngIf="choiceBarbershopForm.get('Role')?.invalid && (choiceBarbershopForm.get('Role')?.dirty || choiceBarbershopForm.get('Role')?.touched)"
+           class="alert">
+        <div class="text-center" *ngIf="choiceBarbershopForm.get('Role')?.hasError('required')">
+          <small>وارد کردن آرایشگاه الزامی است </small>
+        </div>
+      </div>
+    </ion-item>
+
+
+    <!-- Submit Button -->
+    <ion-button expand="block" type="submit" color="primary" class="ion-margin-top">
+      انتخاب
+    </ion-button>
+
+  </form>
+</ion-content>

@@ -29,6 +29,15 @@ export class UserService {
     return this.http.post(this.BASE_URL + 'BarberShop/barbershop', barbershopData, { headers: headers })
   }
 
+  public barbershop_list() {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.get(this.BASE_URL + 'BarberShop/barbershoplists', { headers: headers })
+  }
+
+
+
+  
+
 
 }
 

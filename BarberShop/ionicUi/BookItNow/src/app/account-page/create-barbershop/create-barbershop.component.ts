@@ -7,21 +7,21 @@ import { IonicModule } from '@ionic/angular';
 import { ExploreContainerComponent } from '../../explore-container/explore-container.component';
 import { UserService } from '../../services/user.service';
 
-
 @Component({
-  selector: 'app-tab7',
-  templateUrl: './tab7.component.html',
-  styleUrls: ['./tab7.component.scss'],
+  selector: 'app-create-barbershop',
+  templateUrl: './create-barbershop.component.html',
+  styleUrls: ['./create-barbershop.component.scss'],
   standalone: true,
   imports: [
-      IonicModule,
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      ExploreContainerComponent   
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ExploreContainerComponent
   ],
 })
-export class Tab7Component  implements OnInit {
+export class CreateBarbershopComponent  implements OnInit {
+
   constructor(private fb: FormBuilder,
     private userservice: UserService,
     private router: Router,
@@ -72,6 +72,10 @@ export class Tab7Component  implements OnInit {
     console.log("i am in barber form");
     this.userservice.create_barbershop(formData).subscribe((data: any) => {
       console.log("data of register: ", data);
+      if (data.isSuccess == true) {
+        localStorage.setItem('Role', 'barbershop');
+        this.router.navigate(['/tabs-barbershop']);
+      }
     })
   }
 
@@ -87,7 +91,6 @@ export class Tab7Component  implements OnInit {
     console.log('selectedFile ... ', this.fileToUpload);
 
   }
-
 
 
 }

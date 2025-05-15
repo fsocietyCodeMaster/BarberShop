@@ -7,7 +7,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'tabs-client',
+    path: 'tabs-barber',
     loadChildren: () => import('./tabs-client/tabs-client/tabs-client.routes').then(m => m.routes),
   },
   {
@@ -25,7 +25,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./account-page/login/login.component').then((m) => m.LoginComponent),
-  }
+  },
+  {
+    path: 'createBarbershop',
+    loadComponent: () => import('./account-page/create-barbershop/create-barbershop.component').then((m) => m.CreateBarbershopComponent),
+  },
+  {
+    path: 'choiceBarbershop',
+    loadComponent: () => import('./account-page/choice-barbershop/choice-barbershop.component').then((m) => m.ChoiceBarbershopComponent),
+  },
+
+  
 ];
 
 
