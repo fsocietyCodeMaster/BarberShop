@@ -7,5 +7,6 @@ namespace BarberShop.Repository
         Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber,string role);
         Task<ResponseDTO> LoginAsync(string UserName, string Password);
         ResponseDTO GetRoles();
+
     }
 }

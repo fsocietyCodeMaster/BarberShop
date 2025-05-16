@@ -20,7 +20,7 @@ namespace BarberShop.Controllers
         }
         [HttpPost("selectbarbershop")]
         [Authorize(Roles = "barber")]
-        public async Task<IActionResult> SelectionOfBarberShop(string id)
+        public async Task<IActionResult> SelectionOfBarberShop(Guid id)
         {
             if (ModelState.IsValid)
             {

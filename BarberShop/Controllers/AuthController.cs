@@ -15,7 +15,7 @@ namespace BarberShop.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthentication _auth;
 
-        public AuthController(ISender sender,ILogger<AuthController> logger, IAuthentication auth)
+        public AuthController(ISender sender, ILogger<AuthController> logger, IAuthentication auth)
         {
             _sender = sender;
             _logger = logger;
@@ -131,5 +131,6 @@ namespace BarberShop.Controllers
                 return BadRequest("برخی از ورودی ها نامعتبر هستند");
             }
         }
-        }
+
     }
+}

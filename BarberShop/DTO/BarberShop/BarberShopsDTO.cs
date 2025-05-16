@@ -1,6 +1,5 @@
 ﻿using BarberShop.DTO.Barber;
-using BarberShop.DTO.User;
-using BarberShop.Model;
+
 
 namespace BarberShop.DTO.BarberShop
 {

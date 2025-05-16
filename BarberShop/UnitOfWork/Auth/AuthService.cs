@@ -1,4 +1,6 @@
-﻿using BarberShop.DTO.ResponseResult;
+﻿using Azure;
+using BarberShop.Context;
+using BarberShop.DTO.ResponseResult;
 using BarberShop.Model;
 using BarberShop.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +18,14 @@ namespace BarberShop.UnitOfWork.User
         private readonly UserManager<T_User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-        public AuthService(UserManager<T_User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        private readonly BarberShopDbContext _context;
+
+        public AuthService(UserManager<T_User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, BarberShopDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _context = context;
         }
 
         public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber, string role)
@@ -102,7 +107,7 @@ namespace BarberShop.UnitOfWork.User
                         Message = "کاربر با موفقیت ایجاد شد",
                         IsSuccess = true,
                         StatusCode = StatusCodes.Status200OK,
-                        Data = new {role}
+                        Data = new { role }
                     };
                 }
                 else
@@ -131,6 +136,7 @@ namespace BarberShop.UnitOfWork.User
                 identityUser.Bio = Bio;
                 identityUser.StartTime = StartTime;
                 identityUser.EndTime = EndTime;
+                identityUser.Status = UserStatus.Undefined;
                 var result = await _userManager.CreateAsync(identityUser, Password);
                 if (result.Succeeded)
                 {
@@ -272,7 +278,7 @@ namespace BarberShop.UnitOfWork.User
                 IsSuccess = true,
                 //Role = userRole.FirstOrDefault(),
                 StatusCode = StatusCodes.Status200OK,
-                Data = new {UserRole = userRole}
+                Data = new { UserRole = userRole }
             };
         }
         public ResponseDTO GetRoles()
@@ -287,5 +293,7 @@ namespace BarberShop.UnitOfWork.User
             };
             return success;
         }
+
+
     }
 }

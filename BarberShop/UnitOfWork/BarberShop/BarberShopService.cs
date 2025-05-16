@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BarberShop.Context;
+using BarberShop.DTO.Barber;
 using BarberShop.DTO.BarberShop;
 using BarberShop.DTO.ResponseResult;
 using BarberShop.Model;
 using BarberShop.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -14,12 +16,14 @@ namespace BarberShop.UnitOfWork.BarberShop
         private readonly BarberShopDbContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly UserManager<T_User> _userManager;
 
-        public BarberShopService(BarberShopDbContext context, IMapper mapper, IHttpContextAccessor httpContext)
+        public BarberShopService(BarberShopDbContext context, IMapper mapper, IHttpContextAccessor httpContext, UserManager<T_User> userManager)
         {
             _context = context;
             _mapper = mapper;
             _httpContext = httpContext;
+            _userManager = userManager;
         }
         public async Task<ResponseDTO> ShopForm(string Name, string Address, string Phone, string Description, IFormFile ImageUrl)
         {
@@ -149,7 +153,7 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         public async Task<ResponseDTO> GetAvailableBarberShop(Guid id)
         {
-            var barberShopExist = await _context.T_BarberShops.Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
+            var barberShopExist = await _context.T_BarberShops.Include(c => c.Barbers).Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
             if (barberShopExist != null)
             {
                 var barberShop = _mapper.Map<BarberShopsDTO>(barberShopExist);
@@ -255,13 +259,152 @@ namespace BarberShop.UnitOfWork.BarberShop
             {
                 var error = new ResponseDTO
                 {
-                    Message = " BarberShop found didnt found.",
+                    Message = " BarberShop found didn't found.",
                     IsSuccess = false,
                     StatusCode = StatusCodes.Status200OK,
                     Data = null
                 };
                 return error;
             }
+        }
+
+        public async Task<ResponseDTO> GetPendingBarbers()
+        {
+            if (_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var barberShopUser = await _context.T_Users.FindAsync(userId);
+                //var ownerId = barberShopUser.BarberShop.OwnerId;
+                var barbershop = await _context.T_BarberShops
+                .Where(c => c.IsActive && c.OwnerId == userId)
+                .SelectMany(c => c.Barbers)
+                .Select(c => new BarberInfoDTO
+                {
+
+
+                    Id = c.Id,
+                    FullName = c.FullName,
+                    PhoneNumber = c.PhoneNumber,
+                    StartTime = c.StartTime,
+                    EndTime = c.EndTime,
+                    Bio = c.Bio,
+                    ImageUrl = c.ImageUrl
+                })
+        .ToListAsync();
+                if (barbershop.Any())
+                {
+                    var success = new ResponseDTO
+                    {
+                        Message = "Pending barbers are retrieved successfully.",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = barbershop
+                    };
+                    return success;
+                }
+                else
+                {
+                    var error = new ResponseDTO
+                    {
+                        Message = "No pending barbers found.",
+                        IsSuccess = false,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = null
+                    };
+                    return error;
+                }
+            }
+            else
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "No pending barbers found.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = null
+                };
+                return error;
+            }
+
+        }
+
+        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve)
+        {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return new ResponseDTO()
+                {
+                    Message = "There is a problem with data sending.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+            }
+            var barber = await _userManager.FindByIdAsync(UserId);
+
+            if (barber == null)
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "user not found.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Data = null
+                };
+                return error;
+            }
+            if (barber.Status == UserStatus.Verified)
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "User is verified before.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Data = null
+                };
+                return error;
+            }
+            if (barber.Status == UserStatus.Pending && Approve == "verify")
+            {
+                barber.Status = UserStatus.Verified;
+                await _userManager.UpdateAsync(barber);
+
+                var success = new ResponseDTO
+                {
+                    Message = "User status is updated successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = null
+                };
+                return success;
+            }
+
+            if (barber.Status == UserStatus.Rejected && Approve == "reject")
+            {
+                barber.Status = UserStatus.Rejected;
+                barber.T_BarberShop_ID = Guid.Empty;
+                await _userManager.UpdateAsync(barber);
+
+                var success = new ResponseDTO
+                {
+                    Message = "User status is updated successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = null
+                };
+                return success;
+            }
+            else
+            {
+                return new ResponseDTO()
+                {
+                    Message = "Bad request",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+            }
+
         }
     }
 }
