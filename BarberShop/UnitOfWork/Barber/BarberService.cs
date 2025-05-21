@@ -3,6 +3,7 @@ using BarberShop.Context;
 using BarberShop.DTO.Barber;
 using BarberShop.DTO.BarberShop;
 using BarberShop.DTO.ResponseResult;
+using BarberShop.Model;
 using BarberShop.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -51,7 +52,7 @@ namespace BarberShop.UnitOfWork.Barber
             }
         }
 
-        public async Task<ResponseDTO> SelectBarberShop(string id)
+        public async Task<ResponseDTO> SelectBarberShop(Guid id)
         {
             var user = _httpContext;
             if (user.HttpContext.User.Identity.IsAuthenticated)
@@ -62,17 +63,31 @@ namespace BarberShop.UnitOfWork.Barber
                 var barberShop = await _context.T_BarberShops.FindAsync(id);
                 if (barberShop != null)
                 {
-                    finalUser.T_BarberShop_ID = barberShop.ID_Barbershop;
-                    await _context.SaveChangesAsync();
-                    var success = new ResponseDTO
+                    if (finalUser.Status == UserStatus.Undefined)
                     {
-                        Message = "ایدی سالن  با موفقیت  برای آرایشگر ثبت شد",
-                        IsSuccess = true,
-                        StatusCode = StatusCodes.Status200OK,
-                        Data = null
-
-                    };
-                    return success;
+                        finalUser.Status = UserStatus.Pending;
+                        finalUser.T_BarberShop_ID = barberShop.ID_Barbershop;
+                        await _context.SaveChangesAsync();
+                        var result = new ResponseDTO
+                        {
+                            Message = "Your request to choose the barbershop is sent successfully,wait for acceptance.",
+                            IsSuccess = true,
+                            StatusCode = StatusCodes.Status200OK,
+                            Data = null
+                        };
+                        return result;
+                    }
+                    else
+                    {
+                        var result = new ResponseDTO
+                        {
+                            Message = "You are either verified or rejected you can't continue.",
+                            IsSuccess = true,
+                            StatusCode = StatusCodes.Status200OK,
+                            Data = new { barberId = finalUser.Id }
+                        };
+                        return result;
+                    }
                 }
                 else
                 {
@@ -91,7 +106,7 @@ namespace BarberShop.UnitOfWork.Barber
             {
                 var error = new ResponseDTO
                 {
-                    Message = "خطا کاربر وارد نشده",
+                    Message = "User is not authenticated.",
                     IsSuccess = true,
                     StatusCode = StatusCodes.Status200OK,
                     Data = null

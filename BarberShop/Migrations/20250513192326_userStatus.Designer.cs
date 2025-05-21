@@ -4,6 +4,7 @@ using BarberShop.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberShop.Migrations
 {
     [DbContext(typeof(BarberShopDbContext))]
-    partial class BarberShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250513192326_userStatus")]
+    partial class userStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,7 +169,7 @@ namespace BarberShop.Migrations
                     b.Property<TimeSpan?>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("T_BarberShop_ID")

@@ -17,11 +17,18 @@ namespace BarberShop.Model
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
         public bool IsActive { get; set; }
-
+        public UserStatus? Status { get; set; }
         public Guid? T_BarberShop_ID { get; set; }
         [ForeignKey("T_BarberShop_ID")]
         [JsonIgnore]
         public T_BarberShop? BarberShop { get; set; }
 
+    }
+    public enum UserStatus
+    {
+        Pending,
+        Verified,
+        Rejected,
+        Undefined
     }
 }

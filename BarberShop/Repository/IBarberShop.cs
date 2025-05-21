@@ -8,5 +8,8 @@ namespace BarberShop.Repository
         Task<ResponseDTO> GetAllAvailableBarberShops();
         Task<ResponseDTO> GetAvailableBarberShop(Guid id);
         Task<ResponseDTO> UpdateBarberShopForm(Guid id,string Name,string Address, string Phone, string Description,IFormFile ImageUrl);
+        Task<ResponseDTO> GetPendingBarbers();
+        Task<ResponseDTO> ApproveUser(string UserId, string Approve);
+
     }
 }

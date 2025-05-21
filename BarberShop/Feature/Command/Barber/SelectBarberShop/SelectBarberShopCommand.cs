@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BarberShop.Feature.Command.Barber.SelectBarberShop
 {
-    public record SelectBarberShopCommand(string id) : IRequest<ResponseDTO>
+    public record SelectBarberShopCommand(Guid id) : IRequest<ResponseDTO>
     {
     }
 }
