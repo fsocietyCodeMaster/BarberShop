@@ -55,9 +55,10 @@ export class BarbershopDetailModalComponent  implements OnInit {
     console.log("iD_Barbershop: ", this.iD_Barbershop);
     this.userservice.sendRequest(this.iD_Barbershop).subscribe((data: any) => {
       console.log("response from sendRequest: ", data);
-      if (data.message) {
+      if (data.message == "You are either verified or rejected you can't continue.") {
       console.log("xxxxxxxxxxxxxxxxx ");
         this.presentToast('top');
+        this.dismiss()
       }
 
     })
