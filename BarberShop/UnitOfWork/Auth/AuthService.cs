@@ -222,6 +222,7 @@ namespace BarberShop.UnitOfWork.User
         public async Task<ResponseDTO> LoginAsync(string UserName, string Password)
         {
             var userExist = await _userManager.Users.FirstOrDefaultAsync(c => c.UserName == UserName);
+            var barberShopExist =  _context.T_BarberShops.Any(c => c.OwnerId == userExist.Id);
             if (userExist == null)
             {
                 return new ResponseDTO
@@ -278,9 +279,10 @@ namespace BarberShop.UnitOfWork.User
                 IsSuccess = true,
                 //Role = userRole.FirstOrDefault(),
                 StatusCode = StatusCodes.Status200OK,
-                Data = new { UserRole = userRole }
+                Data = new { UserRole = userRole , barberShopStatus = barberShopExist}
             };
         }
+
         public ResponseDTO GetRoles()
         {
             var roles = _roleManager.Roles.Select(c => c.Name).ToList();
