@@ -34,12 +34,12 @@ export class UserService {
     return this.http.get(this.BASE_URL + 'BarberShop/barbershoplists', { headers: headers })
   }
 
+  public sendRequest(barbershopId: any) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.post(this.BASE_URL + `Barber/selectbarbershop?id=${barbershopId}`, '',{ headers: headers })
+  }
 
-
-  
 
 
 }
 
-//password ---------------
-//Puya@2000

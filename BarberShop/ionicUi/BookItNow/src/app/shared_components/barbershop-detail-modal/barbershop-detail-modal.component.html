@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>جزئیات آرایشگاه</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">بستن</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>اطلاعات آرایشگاه </ion-card-title>
+    <!--<ion-card-subtitle>Card Subtitle</ion-card-subtitle>-->
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <!--<ion-thumbnail slot="">-->
+        <i class="bi bi-telephone-fill px-4"></i>
+        <!--<img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />-->
+        <!--</ion-thumbnail>-->
+        <ion-label>تلفن: {{ phone }}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <!--<ion-thumbnail slot="">-->
+        <i class="bi bi-house-fill"></i>
+        <!--<img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />-->
+        <!--</ion-thumbnail>-->
+        <ion-label>نام آرایشگاه: {{ name }}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <!--<ion-thumbnail slot="">-->
+        <i class="bi bi-file-text-fill"></i>
+        <!--<img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />-->
+        <!--</ion-thumbnail>-->
+        <ion-label>توضیحات: {{ description }}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <!--<ion-thumbnail slot="">-->
+        <i class="bi bi-pin-map-fill"></i>
+        <!--<img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />-->
+        <!--</ion-thumbnail>-->
+        <ion-label>آدرس: {{ address }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+
+  <ion-button fill="clear" (click)="sendRequest()">ارسال درخواست</ion-button>
+
+
+</ion-card>
+

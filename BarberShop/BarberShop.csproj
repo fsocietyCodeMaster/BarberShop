@@ -32,6 +32,7 @@
   <ItemGroup>
     <Folder Include="ionicUi\BookItNow\src\app\account-page\create_barbershop\" />
     <Folder Include="ionicUi\BookItNow\src\app\models\" />
+    <Folder Include="ionicUi\BookItNow\src\app\shared_components\" />
     <Folder Include="ionicUi\BookItNow\src\app\services\" />
   </ItemGroup>
 
