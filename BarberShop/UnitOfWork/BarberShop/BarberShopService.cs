@@ -128,7 +128,7 @@ namespace BarberShop.UnitOfWork.BarberShop
         }
         public async Task<ResponseDTO> GetAllAvailableBarberShops()
         {
-            var barberShopsExist = await _context.T_BarberShops.Include(c => c.Barbers).Where(c => c.IsActive == true).ToListAsync();
+            var barberShopsExist = await _context.T_BarberShops.AsSingleQuery().Include(c => c.Barbers).Where(c => c.IsActive == true).ToListAsync();
             if (barberShopsExist.Any())
             {
                 var barberShops = _mapper.Map<IEnumerable<BarberShopsDTO>>(barberShopsExist);
@@ -153,7 +153,7 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         public async Task<ResponseDTO> GetAvailableBarberShop(Guid id)
         {
-            var barberShopExist = await _context.T_BarberShops.Include(c => c.Barbers).Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
+            var barberShopExist = await _context.T_BarberShops.AsSingleQuery().Include(c => c.Barbers).Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
             if (barberShopExist != null)
             {
                 var barberShop = _mapper.Map<BarberShopsDTO>(barberShopExist);

@@ -222,7 +222,6 @@ namespace BarberShop.UnitOfWork.User
         public async Task<ResponseDTO> LoginAsync(string UserName, string Password)
         {
             var userExist = await _userManager.Users.FirstOrDefaultAsync(c => c.UserName == UserName);
-            var barberShopExist =  _context.T_BarberShops.Any(c => c.OwnerId == userExist.Id);
             if (userExist == null)
             {
                 return new ResponseDTO
@@ -246,6 +245,8 @@ namespace BarberShop.UnitOfWork.User
                 };
 
             }
+            var barberShopExist = _context.T_BarberShops.Any(c => c.OwnerId == userExist.Id);
+
             var userRole = await _userManager.GetRolesAsync(userExist);
 
             var SecreteKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

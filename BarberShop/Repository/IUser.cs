@@ -9,5 +9,7 @@ namespace BarberShop.Repository
         Task<ResponseDTO> UpdateUserAsync(string Username, string FullName, string PhoneNumber, IFormFile ImageUrl);
         Task<ResponseDTO> GetUser(ClaimsPrincipal user);
         Task<ResponseDTO> SelectBarber(string id);
+        Task<ResponseDTO> SetAppointment(string barberIds,DateTime appointmentTime,TimeSpan start, TimeSpan end);
+
     }
 }

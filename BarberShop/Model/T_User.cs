@@ -22,6 +22,7 @@ namespace BarberShop.Model
         [ForeignKey("T_BarberShop_ID")]
         [JsonIgnore]
         public T_BarberShop? BarberShop { get; set; }
+        public ICollection<T_Appointment>? Appointments { get; set; } = new List<T_Appointment>();
 
     }
     public enum UserStatus
