@@ -2,3 +2,35 @@
   display: flex;
   justify-content: center;
 }
+
+
+
+.button-grid-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+
+.time-button {
+  background-color: #3880ff;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 36px;
+  font-size: 13px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.time-button.selected {
+  transform: translateY(3px);
+  background-color: #2cd65f;
+  box-shadow: none;
+}

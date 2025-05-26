@@ -6,16 +6,38 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="ion-padding">
+  <!-- کارت نوبت‌های صبح -->
+  <ion-card class="button-grid-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">نوبت‌های صبح</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="button-grid">
+        <button *ngFor="let time of morningTimes; let i = index"
+                class="time-button"
+                [class.selected]="selectedTime === time"
+                (click)="selectTime(time)">
+          {{ time }}
+        </button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
-  <div class="customer">
-    <p>مشتری</p>
-  </div>
-
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">به زودی اتفاقات زیبایی رقم خواهد خورد</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+  <!-- کارت نوبت‌های بعدازظهر -->
+  <ion-card class="button-grid-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">نوبت‌های بعدازظهر</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="button-grid">
+        <button *ngFor="let time of afternoonTimes; let i = index"
+                class="time-button"
+                [class.selected]="selectedTime === time"
+                (click)="selectTime(time)">
+          {{ time }}
+        </button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

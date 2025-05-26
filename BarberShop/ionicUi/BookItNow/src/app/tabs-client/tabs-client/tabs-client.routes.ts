@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TabsClientComponent } from './TabsClientComponent';
+import { TabsClientComponent } from './tabs-client.component';
 
 export const routes: Routes = [
   {
