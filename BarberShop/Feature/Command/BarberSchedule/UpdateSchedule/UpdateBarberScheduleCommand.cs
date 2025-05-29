@@ -1,12 +1,10 @@
-﻿namespace BarberShop.DTO.Barber
+﻿using BarberShop.DTO.ResponseResult;
+using MediatR;
+
+namespace BarberShop.Feature.Command.BarberSchedule.UpdateSchedule
 {
-    public class BarberInfoDTO
+    public class UpdateBarberScheduleCommand : IRequest<ResponseDTO>
     {
-        public string Id { get; set; }
-        public string FullName { get; set; }
-        public string? Bio { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? PhoneNumber { get; set; }
         public TimeSpan StartTimeMorning { get; set; }
         public TimeSpan StartTimeEvening { get; set; }
         public TimeSpan EndTimeMorning { get; set; }

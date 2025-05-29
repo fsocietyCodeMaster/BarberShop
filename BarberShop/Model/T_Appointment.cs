@@ -16,7 +16,7 @@ namespace BarberShop.Model
         public bool IsActive { get; set; }
         public string T_Client_ID { get; set; }
         public string T_Barber_ID { get; set; } // barber
-        [ForeignKey("T_Barber_ID ")]
+        [ForeignKey("T_Barber_ID")]
         public T_User? User { get; set; }
 
     }

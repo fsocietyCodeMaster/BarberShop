@@ -1,12 +1,13 @@
-﻿namespace BarberShop.DTO.Barber
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BarberShop.Model
 {
-    public class BarberInfoDTO
+    public class T_BarberWorkSchedule
     {
-        public string Id { get; set; }
-        public string FullName { get; set; }
-        public string? Bio { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? PhoneNumber { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ID_BarberWorkSchedule { get; set; }
         public TimeSpan StartTimeMorning { get; set; }
         public TimeSpan StartTimeEvening { get; set; }
         public TimeSpan EndTimeMorning { get; set; }
@@ -19,5 +20,9 @@
         public bool WednesdayWork { get; set; }
         public bool ThursdayWork { get; set; }
         public bool FridayWork { get; set; }
+
+        public string T_Barber_ID { get; set; }
+        [ForeignKey("T_Barber_ID")]
+        public T_User? Barber {  get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace BarberShop.Feature.Command.User.UpdateUser
         }
         public async Task<ResponseDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = await _user.UpdateUserAsync(request.UserName,request.FullName,request.PhoneNumber,request.ImageUrl);
+            var result = await _user.UpdateUserAsync(request.UserName,request.FullName,request.PhoneNumber,request.ImageUrl,request.Bio);
             return result;
         }
     }

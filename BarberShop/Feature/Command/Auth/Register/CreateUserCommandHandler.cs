@@ -14,7 +14,7 @@ namespace BarberShop.Feature.Command.User.CreateUser
         }
         public async Task<ResponseDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = await _user.RegisterAsync(request.UserName,request.Password,request.FullName,request.Bio,request.StartTime,request.EndTime,request.PhoneNumber,request.Role);
+            var result = await _user.RegisterAsync(request.UserName,request.Password,request.FullName,request.Bio,request.PhoneNumber,request.Role);
             return result;
 
         }

@@ -14,8 +14,6 @@ namespace BarberShop.Model
         [StringLength(250)]
         public string? Bio { get; set; }
         public string? ImageUrl { get; set; }
-        public TimeSpan? StartTime { get; set; }
-        public TimeSpan? EndTime { get; set; }
         public bool IsActive { get; set; }
         public UserStatus? Status { get; set; }
         public Guid? T_BarberShop_ID { get; set; }

@@ -28,7 +28,7 @@ namespace BarberShop.UnitOfWork.User
             _context = context;
         }
 
-        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber, string role)
+        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, string PhoneNumber, string role)
         {
             var identityUser = new T_User()
             {
@@ -133,9 +133,6 @@ namespace BarberShop.UnitOfWork.User
                     await _roleManager.CreateAsync(userRole);
 
                 }
-                identityUser.Bio = Bio;
-                identityUser.StartTime = StartTime;
-                identityUser.EndTime = EndTime;
                 identityUser.Status = UserStatus.Undefined;
                 var result = await _userManager.CreateAsync(identityUser, Password);
                 if (result.Succeeded)

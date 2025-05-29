@@ -13,6 +13,7 @@ namespace BarberShop.Context
         public DbSet<T_User> T_Users { get; set; }
         public DbSet<T_BarberShop> T_BarberShops { get; set; }
         public DbSet<T_Appointment> T_Appointments { get; set; }
+        public DbSet<T_BarberWorkSchedule> T_BarberWorkSchedules { get; set; }
 
        
     }

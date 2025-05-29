@@ -102,6 +102,7 @@ namespace BarberShop.Controllers
 
         }
         [HttpGet("barbershop")]
+        [Authorize(Roles ="barber,barbershop")]
         public async Task<IActionResult> BarberShop(Guid id)
         {
             if (ModelState.IsValid)
@@ -177,6 +178,7 @@ namespace BarberShop.Controllers
 
         }
         [HttpGet("Getbarberbybarbershop")]
+        [Authorize(Roles ="barbershop")]
         public async Task<IActionResult> GetBarberByBarberShop()
         {
             if (ModelState.IsValid)
