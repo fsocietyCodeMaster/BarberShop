@@ -8,8 +8,8 @@
         public string? ImageUrl { get; set; }
         public string? PhoneNumber { get; set; }
         public TimeSpan StartTimeMorning { get; set; }
-        public TimeSpan StartTimeEvening { get; set; }
         public TimeSpan EndTimeMorning { get; set; }
+        public TimeSpan StartTimeEvening { get; set; }
         public TimeSpan EndTimeEvening { get; set; }
         public TimeSpan ScopeTime { get; set; }
         public bool SaturdayWork { get; set; }

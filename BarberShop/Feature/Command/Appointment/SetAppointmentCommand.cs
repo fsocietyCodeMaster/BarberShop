@@ -1,6 +1,5 @@
 ﻿using BarberShop.DTO.ResponseResult;
 using MediatR;
-using System.Security.Claims;
 
 namespace BarberShop.Feature.Command.Appointment
 {

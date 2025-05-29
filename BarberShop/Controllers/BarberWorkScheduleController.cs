@@ -101,7 +101,7 @@ namespace BarberShop.Controllers
             }
 
         }
-        [HttpPost("getworkschedule")]
+        [HttpGet("getworkschedule")]
         [Authorize(Roles = "barber")]
         public async Task<IActionResult> GetWorkSchedule()
         {

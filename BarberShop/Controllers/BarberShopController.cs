@@ -25,7 +25,7 @@ namespace BarberShop.Controllers
             _logger = logger;
         }
 
-        [HttpPost("barbershop")]
+        [HttpPost("barbershopform")]
         [Authorize(Roles = "barbershop")]
         public async Task<IActionResult> BarberShopForm(BarberShopCommand command)
         {
@@ -214,7 +214,7 @@ namespace BarberShop.Controllers
                 return BadRequest("برخی از ورودی ها نامعتبر هستند");
             }
         }
-        [HttpPost("approval")]
+        [HttpPost("barberapproval")]
         public async Task<IActionResult> Approval(ApprovalCommand command)
         {
             if (ModelState.IsValid)

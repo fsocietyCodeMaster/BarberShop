@@ -8,6 +8,7 @@ using BarberShop.Model;
 using BarberShop.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace BarberShop.UnitOfWork.Barber
@@ -221,5 +222,204 @@ namespace BarberShop.UnitOfWork.Barber
             }
 
         }
+        public async Task<ResponseDTO> SelectBarber(string id)
+        {
+            var barberExist = await _context.T_Users.FirstOrDefaultAsync(c => c.Id == id);
+            if (barberExist != null)
+            {
+                var schedule = await _context.T_BarberWorkSchedules.Where(c => c.T_Barber_ID == barberExist.Id).Select(c => new BarberInfoDTO
+                {
+                    Id = c.T_Barber_ID,
+                    FullName = barberExist.FullName,
+                    Bio = barberExist.Bio,
+                    ImageUrl = barberExist.ImageUrl,
+                    PhoneNumber = barberExist.PhoneNumber,
+                    StartTimeMorning = c.StartTimeMorning,
+                    EndTimeMorning = c.EndTimeMorning,
+                    StartTimeEvening = c.StartTimeEvening,
+                    EndTimeEvening = c.EndTimeEvening,
+                    SaturdayWork = c.SaturdayWork,
+                    SundayWork = c.SundayWork,
+                    MondayWork = c.MondayWork,
+                    TuesdayWork = c.TuesdayWork,
+                    WednesdayWork = c.WednesdayWork,
+                    ThursdayWork = c.ThursdayWork,
+                    FridayWork = c.FridayWork,
+                    ScopeTime = c.ScopeTime
+
+                }).FirstOrDefaultAsync();
+                var success = new ResponseDTO
+                {
+                    Message = "Barber is retrieved successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = schedule
+                };
+                return success;
+            }
+            return new ResponseDTO()
+            {
+                Message = "No barber found.",
+                IsSuccess = false,
+                StatusCode = StatusCodes.Status200OK,
+                Data = null
+            };
+
+
+        }
+
+        public async Task<ResponseDTO> SetAppointment(string barberId, DateTime appointmentTime, TimeSpan start, TimeSpan end)
+        {
+            if (!_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                return new ResponseDTO()
+                {
+                    Message = ".کاربر وارد سیستم نشده است",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status401Unauthorized,
+                    Data = null
+                };
+            }
+            var client = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(client))
+            {
+                return new ResponseDTO()
+                {
+                    Message = ".بازیابی اطلاعات کاربر امکان‌پذیر نیست",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+            }
+            var barberExist = await _userManager.FindByIdAsync(barberId);
+            var barberSchedule = await _context.T_BarberWorkSchedules.FirstOrDefaultAsync(c => c.T_Barber_ID == barberExist.Id);
+
+            if (barberExist == null && barberSchedule == null)
+            {
+                return new ResponseDTO
+                {
+                    Message = "No barber and schedule found.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+            }
+            var newAppointment = new T_Appointment
+            {
+                AppointmentDate = appointmentTime,
+                StartTime = start,
+                EndTime = end,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                T_Barber_ID = barberId,
+                T_Client_ID = client,
+                Status = AppointmentStatus.Pending
+            };
+            _context.Add(newAppointment);
+            await _context.SaveChangesAsync();
+
+            return new ResponseDTO
+            {
+                Message = "Appointment has been successfully scheduled.",
+                IsSuccess = true,
+                StatusCode = StatusCodes.Status200OK,
+                Data = null
+            };
+
+        }
+        public async Task<ResponseDTO> GetAvailableTime(string id, DateTime date)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There is a problem with parameter.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = null
+                };
+                return error;
+            }
+            var barberExist = await _userManager.FindByIdAsync(id);
+            var barberSchedule = await _context.T_BarberWorkSchedules.FirstOrDefaultAsync(c => c.T_Barber_ID == id);
+            if (barberExist != null && barberSchedule != null)
+            {
+                var dayOfWeek = date.DayOfWeek;
+                var fa = new CultureInfo("en"); // study about globalization class.
+                bool isWorking = dayOfWeek switch
+                {
+                    DayOfWeek.Saturday => barberSchedule.SaturdayWork == true,
+                    DayOfWeek.Sunday => barberSchedule.SundayWork == true,
+                    DayOfWeek.Monday => barberSchedule.MondayWork == true,
+                    DayOfWeek.Tuesday => barberSchedule.TuesdayWork == true,
+                    DayOfWeek.Wednesday => barberSchedule.WednesdayWork == true,
+                    DayOfWeek.Thursday => barberSchedule.ThursdayWork == true,
+                    DayOfWeek.Friday => barberSchedule.FridayWork == true,
+                    _ => false
+                };
+
+                if (!isWorking)
+                {
+                    var error = new ResponseDTO
+                    {
+                        Message = $"barber doesn't work at {dayOfWeek}",
+                        IsSuccess = false,
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Data = new List<AvailableTimeSlots>()
+
+                    };
+                    return error;
+                }
+
+                var appointments = await _context.T_Appointments
+      .Where(c => c.T_Barber_ID == barberExist.Id && c.AppointmentDate == date && c.IsActive)
+      .ToListAsync();
+
+                var availableSlots = new List<AvailableTimeSlots>();
+                var cutDuration = barberSchedule.ScopeTime;
+                void GenerateSlots(TimeSpan start, TimeSpan end)
+                {
+                    for (var time = start; time + cutDuration <= end; time += cutDuration)
+                    {
+                        var overlap = appointments.Any(a =>
+                            (time < a.EndTime) && (time + cutDuration > a.StartTime));
+
+                        if (!overlap)
+                        {
+                            availableSlots.Add(new AvailableTimeSlots
+                            {
+                                Start = time,
+                                End = time + cutDuration,
+                                DayOfWeek = fa.DateTimeFormat.GetDayName(dayOfWeek)
+                            });
+                        }
+                    }
+                }
+
+                GenerateSlots(barberSchedule.StartTimeMorning, barberSchedule.EndTimeMorning);
+                GenerateSlots(barberSchedule.StartTimeEvening, barberSchedule.EndTimeEvening);
+
+                var result = new ResponseDTO
+                {
+                    Message = "free times are retrieved.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = availableSlots
+                };
+                return result;
+            }
+            else
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "No barbershop found.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+                return error;
+            }
+        }
+
     }
 }
