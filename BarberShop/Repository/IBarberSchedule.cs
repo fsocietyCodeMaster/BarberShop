@@ -12,6 +12,7 @@ TimeSpan startEvening, TimeSpan endTimeEvening, TimeSpan scopeTime, bool saturda
 bool sunday, bool monday, bool tuesday, bool wednesday, bool thursday, bool friday);
 
         Task<ResponseDTO> GetSchedules();
+        Task<ResponseDTO> GetAvailableTime(string id, DateTime date);
 
     }
 }

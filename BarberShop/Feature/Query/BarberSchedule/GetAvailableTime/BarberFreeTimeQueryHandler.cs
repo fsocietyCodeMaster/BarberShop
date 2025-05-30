@@ -2,19 +2,19 @@
 using BarberShop.Repository;
 using MediatR;
 
-namespace BarberShop.Feature.Query.Barber.GetAvailableTime
+namespace BarberShop.Feature.Query.BarberSchedule.GetAvailableTime
 {
     public class BarberFreeTimeQueryHandler : IRequestHandler<BarberFreeTimeQuery, ResponseDTO>
     {
-        private readonly IBarber _barber;
+        private readonly IBarberSchedule _barberSchedule;
 
-        public BarberFreeTimeQueryHandler(IBarber barber)
+        public BarberFreeTimeQueryHandler(IBarberSchedule barberSchedule)
         {
-            _barber = barber;
+            _barberSchedule = barberSchedule;
         }
         public async Task<ResponseDTO> Handle(BarberFreeTimeQuery request, CancellationToken cancellationToken)
         {
-            var result = await _barber.GetAvailableTime(request.barberId, request.date);
+            var result = await _barberSchedule.GetAvailableTime(request.barberId, request.date);
             return result;
         }
     }

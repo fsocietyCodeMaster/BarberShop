@@ -1,7 +1,7 @@
 ﻿using BarberShop.DTO.ResponseResult;
 using MediatR;
 
-namespace BarberShop.Feature.Command.Appointment
+namespace BarberShop.Feature.Command.Appointment.SetAppointment
 {
     public record SetAppointmentCommand : IRequest<ResponseDTO>
     {

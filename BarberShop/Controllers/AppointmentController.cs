@@ -1,6 +1,7 @@
 ﻿using BarberShop.DTO.ResponseResult;
-using BarberShop.Feature.Command.Barber.SelectBarberShop;
-using BarberShop.Feature.Query.Barber.SelectBarber;
+using BarberShop.Feature.Command.Appointment.SetAppointment;
+using BarberShop.Feature.Query.Appointment.GetPending;
+using BarberShop.Feature.Query.Barber.GetBarberShop;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,25 +10,25 @@ namespace BarberShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BarberController : ControllerBase
+    public class AppointmentController : ControllerBase
     {
         private readonly ISender _sender;
-        private readonly ILogger<BarberShopController> _logger;
-
-        public BarberController(ISender sender,ILogger<BarberShopController> logger)
+        private readonly ILogger<AuthController> _logger;
+        public AppointmentController(ISender sender, ILogger<AuthController> logger)
         {
             _sender = sender;
             _logger = logger;
         }
-        [HttpPost("selectbarbershop")]
+        
+        [HttpGet("getpendingappointments")]
         [Authorize(Roles = "barber")]
-        public async Task<IActionResult> SelectionOfBarberShop(Guid id)
+        public async Task<IActionResult> PendingAppointment()
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var result = await _sender.Send(new SelectBarberShopCommand(id));
+                    var result = await _sender.Send(new GetPendingQuery());
                     if (result.IsSuccess)
                     {
                         return Ok(result);
@@ -58,15 +59,15 @@ namespace BarberShop.Controllers
 
         }
 
-        [HttpPost("selectbarber")]
-        [Authorize(Roles = "user,barbershop")]
-        public async Task<IActionResult> SelectionOfBarber(string id)
+        [HttpPost("setappointment")]
+        [Authorize(Roles ="user")]
+        public async Task<IActionResult> SetAppointment(SetAppointmentCommand command)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var result = await _sender.Send(new SelectBarberQuery(id));
+                    var result = await _sender.Send(command);
                     if (result.IsSuccess)
                     {
                         return Ok(result);
@@ -96,5 +97,6 @@ namespace BarberShop.Controllers
             }
 
         }
+
     }
 }

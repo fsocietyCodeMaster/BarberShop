@@ -2,6 +2,7 @@ using BarberShop.Context;
 using BarberShop.Customized.SeedData;
 using BarberShop.Model;
 using BarberShop.Repository;
+using BarberShop.UnitOfWork.Appointment;
 using BarberShop.UnitOfWork.Barber;
 using BarberShop.UnitOfWork.BarberSchedule;
 using BarberShop.UnitOfWork.BarberShop;
@@ -110,6 +111,7 @@ builder.Services.AddScoped<IUser,UserService>();
 builder.Services.AddScoped<IBarberShop,BarberShopService>();
 builder.Services.AddScoped<IBarber,BarberService>();
 builder.Services.AddScoped<IBarberSchedule,BarberScheduleService>();
+builder.Services.AddScoped<IAppointment,AppointmentService>();
 builder.Services.AddScoped<SeedingData>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(policy =>
