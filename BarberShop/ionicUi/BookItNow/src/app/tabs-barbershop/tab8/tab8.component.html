@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!--<ion-header [translucent]="true">
   <ion-toolbar color="success">
     <ion-title>
       Tab 8
@@ -10,11 +10,6 @@
   <div class="barbershop">
     <p>آرایشگاه</p>
   </div>
-
-  <!--<div class="barber-list">
-    <i class="bi bi-card-list"></i>
-    <p (click)="barberList()">لیست آرایشگر ها</p>
-  </div>-->
 
 
   <ion-card (click)="barberList()">
@@ -28,21 +23,21 @@
       <ion-grid>
         <ion-row class="header-row">
           <ion-col size="3"><strong>عکس</strong></ion-col>
-          <ion-col size="3"><strong>نام</strong></ion-col>
-          <!--<ion-col size="3"><strong>تلفن</strong></ion-col>-->
-          <ion-col size="3"><strong>تأیید</strong></ion-col>
-          <ion-col size="3"><strong>رد</strong></ion-col>
-        </ion-row>
-        
-        <ion-row *ngFor="let barber of barbers_list">
-          <ion-col size="3">
-            <ion-avatar>
-              <img [src]="barber.imageUrl" alt="عکس">
-            </ion-avatar>
-          </ion-col>
-          <ion-col size="3">{{ barber.fullName }}</ion-col>
-          <!--<ion-col size="3">{{ barber.phoneNumber }}</ion-col>-->
-          <ion-col size="3">
+          <ion-col size="3"><strong>نام</strong></ion-col>-->
+<!--<ion-col size="3"><strong>تلفن</strong></ion-col>-->
+<!--<ion-col size="3"><strong>تأیید</strong></ion-col>
+  <ion-col size="3"><strong>رد</strong></ion-col>
+</ion-row>
+
+<ion-row *ngFor="let barber of barbers_list">
+  <ion-col size="3">
+    <ion-avatar>
+      <img [src]="barber.imageUrl" alt="عکس">
+    </ion-avatar>
+  </ion-col>
+  <ion-col size="3">{{ barber.fullName }}</ion-col>-->
+<!--<ion-col size="3">{{ barber.phoneNumber }}</ion-col>-->
+<!--<ion-col size="3">
             <ion-button color="success" size="small" (click)="confirm(barber)">تأیید</ion-button>
           </ion-col>
           <ion-col size="3">
@@ -53,5 +48,57 @@
     </ion-card-content>
   </ion-card>
 
+
+</ion-content>-->
+<!------------------------------->
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="success">
+    <ion-title>مدیریت آرایشگرها</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- عنوان صفحه -->
+  <div class="barbershop">
+    <h2>آرایشگاه</h2>
+  </div>
+
+  <!-- دکمه نمایش لیست -->
+  <ion-card class="clickable-card" (click)="barberList()">
+    <ion-card-content>
+      <h3 class="title">لیست آرایشگرها</h3>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- جدول لیست آرایشگرها -->
+  <ion-card *ngIf="showTable">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row class="header-row">
+          <ion-col size="3">عکس</ion-col>
+          <ion-col size="3">نام</ion-col>
+          <ion-col size="3">تأیید</ion-col>
+          <ion-col size="3">رد</ion-col>
+        </ion-row>
+
+        <ion-row *ngFor="let barber of barbers_list" class="data-row">
+          <ion-col size="3">
+            <ion-avatar>
+              <img [src]="barber.imageUrl || 'assets/images/default-avatar.png'" style="width:30px;height:30px" alt="عکس">
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="3">{{ barber.fullName }}</ion-col>
+          <ion-col size="3">
+            <ion-button color="success" fill="outline" size="small" shape="round" (click)="confirm(barber)">تأیید</ion-button>
+          </ion-col>
+          <ion-col size="3">
+            <ion-button color="danger" fill="outline" size="small" shape="round" (click)="reject(barber)">رد</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

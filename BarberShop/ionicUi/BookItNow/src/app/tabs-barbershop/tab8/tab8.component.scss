@@ -1,36 +1,104 @@
+//.barbershop {
+//  display: flex;
+//  justify-content: center;
+//}
+
+//.barber-list {
+//  cursor: pointer;
+//  color: gray;
+//  direction: rtl;
+//  display: flex;
+//  justify-content: start;
+//  align-items: center;
+//  padding-right: 10px;
+//}
+
+//.barber-list i {
+//  padding: 10px;
+//}
+
+//.title {
+//  text-align: center;
+//  font-size: 18px;
+//}
+
+//ion-avatar img {
+//  width: 100%;
+//  height: 100%;
+//  object-fit: cover;
+//}
+
+//.header-row {
+//  background: #f0f0f0;
+//  font-weight: bold;
+//}
+
+//ion-grid {
+//  direction: rtl;
+//}
+
+//ion-col,
+//ion-avatar {
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//}
+
+
+//-------------------------------
+
 .barbershop {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
-.barber-list {
-  cursor: pointer;
-  color: gray;
-  direction: rtl;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  padding-right: 10px;
-}
-
-.barber-list i {
-  padding: 10px;
+.barbershop h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
 }
 
 .title {
   text-align: center;
   font-size: 18px;
+  font-weight: 500;
+  color: #2a2a2a;
+}
+
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.clickable-card:hover {
+  transform: scale(1.02);
+}
+
+ion-card {
+  border-radius: 12px;
+}
+
+.header-row {
+  background-color: #e0f2f1;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 8px;
+}
+
+.data-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 ion-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.header-row {
-  background: #f0f0f0;
-  font-weight: bold;
+  border-radius: 50%;
 }
 
 ion-grid {
@@ -42,4 +110,11 @@ ion-avatar {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
+
+ion-button {
+  font-size: 13px;
+}
+
+
