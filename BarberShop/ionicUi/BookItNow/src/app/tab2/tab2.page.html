@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!--<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Tab 2
@@ -6,26 +6,25 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <!-- کارت نوبت‌های صبح -->
-  <ion-card class="button-grid-card">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">نوبت‌های صبح</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="button-grid">
-        <button *ngFor="let time of morningTimes; let i = index"
-                class="time-button"
-                [class.selected]="selectedTime === time"
-                (click)="selectTime(time)">
-          {{ time }}
-        </button>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- کارت نوبت‌های بعدازظهر -->
-  <ion-card class="button-grid-card">
+<ion-content class="ion-padding">-->
+<!-- کارت نوبت‌های صبح -->
+<!--<ion-card class="button-grid-card">
+  <ion-card-header>
+    <ion-card-title class="ion-text-center">نوبت‌های صبح</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <div class="button-grid">
+      <button *ngFor="let time of morningTimes; let i = index"
+              class="time-button"
+              [class.selected]="selectedTime === time"
+              (click)="selectTime(time)">
+        {{ time }}
+      </button>
+    </div>
+  </ion-card-content>
+</ion-card>-->
+<!-- کارت نوبت‌های بعدازظهر -->
+<!--<ion-card class="button-grid-card">
     <ion-card-header>
       <ion-card-title class="ion-text-center">نوبت‌های بعدازظهر</ion-card-title>
     </ion-card-header>
@@ -40,4 +39,38 @@
       </div>
     </ion-card-content>
   </ion-card>
+</ion-content>-->
+<!---------------------------------->
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>لیست آرایشگاه‌ها</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- باکس جستجو -->
+  <ion-searchbar [(ngModel)]="searchTerm"
+                 (ionInput)="onSearch($event)"
+                 placeholder="نام آرایشگاه">
+  </ion-searchbar>
+
+  <!-- لیست آرایشگاه‌ها -->
+  <ion-list *ngIf="filteredSalons.length > 0; else noResult">
+    <!--<ion-card *ngFor="let salon of filteredSalons" class="salon-card">-->
+    <ion-card *ngFor="let salon of filteredSalons"
+              class="salon-card"              
+              [routerLink]="['/salons', salon.iD_Barbershop, 'barbers']">
+      <ion-card-content>
+        <h3><i class="bi bi-person-fill"></i> {{ salon.name }}</h3>
+        <p><i class="bi bi-geo-alt-fill"></i> {{ salon.address }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <ng-template #noResult>
+    <div class="no-result">
+      نتیجه‌ای یافت نشد.
+    </div>
+  </ng-template>
 </ion-content>

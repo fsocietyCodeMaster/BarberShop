@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/salons"></ion-back-button>
+    </ion-buttons>
+    <ion-title>آرایشگران</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+  <ng-container *ngIf="!loading && barbers.length > 0; else noBarber">
+    <ion-card *ngFor="let b of filteredbarbers[0].barbers" class="barber-card">
+      <ion-card-header>
+        <ion-avatar slot="start" class="avatar">
+          <img [src]="b.imageUrl || 'assets/default-avatar.png'"
+               alt="{{ b.fullName }}" />
+        </ion-avatar>
+        <ion-card-title>{{ b.fullName }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><i class="bi bi-person-fill"></i> نام: {{ b.fullName || '—' }}</p>
+        <p><i class="bi bi-telephone-fill"></i> شماره تماس: {{ b.phoneNumber|| '—' }}</p>        
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-template #noBarber>
+    <div class="no-result">
+      هیچ آرایشگری یافت نشد.
+    </div>
+  </ng-template>
+</ion-content>

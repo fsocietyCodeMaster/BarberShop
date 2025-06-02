@@ -26,7 +26,7 @@ export class UserService {
 
   public create_barbershop(barbershopData: any) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.post(this.BASE_URL + 'BarberShop/barbershop', barbershopData, { headers: headers })
+    return this.http.post(this.BASE_URL + 'BarberShop/barbershopform', barbershopData, { headers: headers })
   }
 
   public barbershop_list() {
@@ -44,7 +44,19 @@ export class UserService {
     return this.http.get(this.BASE_URL + 'BarberShop/barbershop?id='+ id , { headers: headers })
   }
 
-  //BarberShop/barbershop?id=
+  public getUserInfo() {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.get(this.BASE_URL + 'User/userinfo', { headers: headers })
+
+  }
+
+  public Getbarberbybarbershop() {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.get(this.BASE_URL + 'BarberShop/Getbarberbybarbershop', { headers: headers })
+
+  }
+
+  //BarberShop/Getbarberbybarbershop
 
 }
 

@@ -34,3 +34,49 @@
   background-color: #2cd65f;
   box-shadow: none;
 }
+
+
+
+ion-searchbar {
+  --border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.salon-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  ion-card-content {
+    h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+}
+
+.no-result {
+  text-align: center;
+  margin-top: 40px;
+  color: #999;
+  font-size: 16px;
+}
+
+.bi-person-fill {
+  color: rgb(92, 169, 217);
+}
+
+.bi-geo-alt-fill {
+  color: lightskyblue;
+}
