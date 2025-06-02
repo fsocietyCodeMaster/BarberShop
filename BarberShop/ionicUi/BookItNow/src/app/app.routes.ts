@@ -34,6 +34,16 @@ export const routes: Routes = [
     path: 'choiceBarbershop',
     loadComponent: () => import('./account-page/choice-barbershop/choice-barbershop.component').then((m) => m.ChoiceBarbershopComponent),
   },
+  //{
+  //  path: 'salon-barbers',
+  //  loadComponent: () => import('./salon-barbers/salon-barbers.page').then( m => m.SalonBarbersPage)
+  //},
+  {
+    path: 'salons/:id/barbers',
+    loadComponent: () =>
+      import('./salon-barbers/salon-barbers.page').then(m => m.SalonBarbersPage)
+  },
+
 
   
 ];

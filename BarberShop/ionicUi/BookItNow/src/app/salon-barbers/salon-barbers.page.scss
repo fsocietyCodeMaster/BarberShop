@@ -1,0 +1,35 @@
+ion-spinner {
+  display: block;
+  margin: 40px auto;
+}
+
+.barber-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+ion-card-header {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  margin-left: 12px;
+}
+
+.no-result {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+}
+
+.bi-person-fill {
+  color: rgb(92, 169, 217);
+}
+
+.bi-telephone-fill {
+  color: forestgreen;
+}
