@@ -50,6 +50,10 @@ namespace BarberShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("T_Client_ID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID_Appointment");
 
                     b.HasIndex("T_Barber_ID");
@@ -100,6 +104,59 @@ namespace BarberShop.Migrations
                     b.ToTable("T_BarberShops");
                 });
 
+            modelBuilder.Entity("BarberShop.Model.T_BarberWorkSchedule", b =>
+                {
+                    b.Property<Guid>("ID_BarberWorkSchedule")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeSpan>("EndTimeEvening")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("EndTimeMorning")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("FridayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MondayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SaturdayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<TimeSpan>("ScopeTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTimeEvening")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTimeMorning")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("SundayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("T_Barber_ID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ThursdayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("TuesdayWork")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WednesdayWork")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID_BarberWorkSchedule");
+
+                    b.HasIndex("T_Barber_ID");
+
+                    b.ToTable("T_BarberWorkSchedules");
+                });
+
             modelBuilder.Entity("BarberShop.Model.T_User", b =>
                 {
                     b.Property<string>("Id")
@@ -122,9 +179,6 @@ namespace BarberShop.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("EndTime")
-                        .HasColumnType("time");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -162,9 +216,6 @@ namespace BarberShop.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan?>("StartTime")
-                        .HasColumnType("time");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -330,12 +381,23 @@ namespace BarberShop.Migrations
             modelBuilder.Entity("BarberShop.Model.T_Appointment", b =>
                 {
                     b.HasOne("BarberShop.Model.T_User", "User")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("T_Barber_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BarberShop.Model.T_BarberWorkSchedule", b =>
+                {
+                    b.HasOne("BarberShop.Model.T_User", "Barber")
+                        .WithMany()
+                        .HasForeignKey("T_Barber_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Barber");
                 });
 
             modelBuilder.Entity("BarberShop.Model.T_User", b =>
@@ -401,6 +463,11 @@ namespace BarberShop.Migrations
             modelBuilder.Entity("BarberShop.Model.T_BarberShop", b =>
                 {
                     b.Navigation("Barbers");
+                });
+
+            modelBuilder.Entity("BarberShop.Model.T_User", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

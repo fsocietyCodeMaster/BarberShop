@@ -1,5 +1,6 @@
 ﻿using BarberShop.DTO.ResponseResult;
 using BarberShop.Feature.Command.Barber.SelectBarberShop;
+using BarberShop.Feature.Query.Barber.SelectBarber;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,5 +58,43 @@ namespace BarberShop.Controllers
 
         }
 
+        [HttpPost("selectbarber")]
+        [Authorize(Roles = "user,barbershop")]
+        public async Task<IActionResult> SelectionOfBarber(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await _sender.Send(new SelectBarberQuery(id));
+                    if (result.IsSuccess)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return BadRequest(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "an error occurred.");
+
+                    var error = new ResponseDTO
+                    {
+                        Message = "خطای سرور رخ داده است. اگر مشکل ادامه داشت، لطفاً با پشتیبانی تماس بگیرید",
+                        IsSuccess = false,
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+
+                    return BadRequest(error);
+                }
+            }
+            else
+            {
+                return BadRequest("برخی از ورودی ها نامعتبر هستند");
+            }
+
+        }
     }
 }

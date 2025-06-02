@@ -18,8 +18,6 @@ namespace BarberShop.Feature.Command.User.CreateUser
         public string FullName { get; set; }
         [StringLength(250)]
         public string? Bio { get; set; }
-        public TimeSpan? StartTime { get; set; }
-        public TimeSpan? EndTime { get; set; } 
 
         [StringLength(50)]
         [DataType(DataType.PhoneNumber)]

@@ -28,7 +28,7 @@ namespace BarberShop.UnitOfWork.User
             _context = context;
         }
 
-        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, TimeSpan? StartTime, TimeSpan? EndTime, string PhoneNumber, string role)
+        public async Task<ResponseDTO> RegisterAsync(string UserName, string Password, string FullName, string? Bio, string PhoneNumber, string role)
         {
             var identityUser = new T_User()
             {
@@ -133,9 +133,6 @@ namespace BarberShop.UnitOfWork.User
                     await _roleManager.CreateAsync(userRole);
 
                 }
-                identityUser.Bio = Bio;
-                identityUser.StartTime = StartTime;
-                identityUser.EndTime = EndTime;
                 identityUser.Status = UserStatus.Undefined;
                 var result = await _userManager.CreateAsync(identityUser, Password);
                 if (result.Succeeded)
@@ -222,7 +219,6 @@ namespace BarberShop.UnitOfWork.User
         public async Task<ResponseDTO> LoginAsync(string UserName, string Password)
         {
             var userExist = await _userManager.Users.FirstOrDefaultAsync(c => c.UserName == UserName);
-            var barberShopExist =  _context.T_BarberShops.Any(c => c.OwnerId == userExist.Id);
             if (userExist == null)
             {
                 return new ResponseDTO
@@ -246,6 +242,8 @@ namespace BarberShop.UnitOfWork.User
                 };
 
             }
+            var barberShopExist = _context.T_BarberShops.Any(c => c.OwnerId == userExist.Id);
+
             var userRole = await _userManager.GetRolesAsync(userExist);
 
             var SecreteKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

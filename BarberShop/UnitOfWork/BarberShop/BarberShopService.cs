@@ -128,10 +128,10 @@ namespace BarberShop.UnitOfWork.BarberShop
         }
         public async Task<ResponseDTO> GetAllAvailableBarberShops()
         {
-            var barberShopsExist = await _context.T_BarberShops.Include(c => c.Barbers).Where(c => c.IsActive == true).ToListAsync();
+            var barberShopsExist = await _context.T_BarberShops.AsSingleQuery().Include(c => c.Barbers).Where(c => c.IsActive == true).ToListAsync();
             if (barberShopsExist.Any())
             {
-                var barberShops = _mapper.Map<IEnumerable<BarberShopsDTO>>(barberShopsExist);
+                var barberShops = _mapper.Map<IEnumerable<BarberShopsForGetAllDTO>>(barberShopsExist);
                 var success = new ResponseDTO
                 {
                     Message = "BarberShops successfully retrieved.",
@@ -153,10 +153,10 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         public async Task<ResponseDTO> GetAvailableBarberShop(Guid id)
         {
-            var barberShopExist = await _context.T_BarberShops.Include(c => c.Barbers).Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
+            var barberShopExist = await _context.T_BarberShops.AsSingleQuery().Include(c => c.Barbers).Where(c => c.IsActive == true && c.ID_Barbershop == id).FirstOrDefaultAsync();
             if (barberShopExist != null)
             {
-                var barberShop = _mapper.Map<BarberShopsDTO>(barberShopExist);
+                var barberShop = _mapper.Map<BarberShopDTO>(barberShopExist);
                 var success = new ResponseDTO
                 {
                     Message = "BarberShop successfully retrieved.",
@@ -285,8 +285,6 @@ namespace BarberShop.UnitOfWork.BarberShop
                     Id = c.Id,
                     FullName = c.FullName,
                     PhoneNumber = c.PhoneNumber,
-                    StartTime = c.StartTime,
-                    EndTime = c.EndTime,
                     Bio = c.Bio,
                     ImageUrl = c.ImageUrl
                 })

@@ -11,6 +11,10 @@ namespace BarberShop.Mapping
         {
             CreateMap<T_BarberShop, BarberShopsDTO>();
             CreateMap<T_User, BarberInfoDTO>();
+            CreateMap<T_BarberShop, BarberShopDTO>();
+            CreateMap<T_BarberShop, BarberShopsForGetAllDTO>();
+            CreateMap<T_User, BarberInfoForBarberShopDTO>();
+
         }
     }
 }

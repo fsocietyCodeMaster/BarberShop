@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Azure;
 using BarberShop.Context;
+using BarberShop.DTO.Appointment;
 using BarberShop.DTO.Barber;
 using BarberShop.DTO.ResponseResult;
+using BarberShop.DTO.Slots;
 using BarberShop.DTO.User;
 using BarberShop.Model;
 using BarberShop.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace BarberShop.UnitOfWork.User
@@ -17,12 +20,14 @@ namespace BarberShop.UnitOfWork.User
         private readonly BarberShopDbContext _context;
         private readonly UserManager<T_User> _userManager;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public UserService(BarberShopDbContext context, UserManager<T_User> userManager, IMapper mapper)
+        public UserService(BarberShopDbContext context, UserManager<T_User> userManager, IMapper mapper, IHttpContextAccessor httpContext)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
+            _httpContext = httpContext;
         }
 
         public async Task<ResponseDTO> DeleteUserAsync(Guid id)
@@ -99,6 +104,7 @@ namespace BarberShop.UnitOfWork.User
                     StatusCode = StatusCodes.Status200OK,
                     Data = new UserInfoDTO
                     {
+                        Id = userExist.Id,
                         FullName = userExist.FullName,
                         ImageUrl = userExist.ImageUrl,
                         UserName = userExist.UserName,
@@ -116,13 +122,12 @@ namespace BarberShop.UnitOfWork.User
                     StatusCode = StatusCodes.Status200OK,
                     Data = new UserInfoDTO
                     {
+                        Id = userExist.Id,
                         FullName = userExist.FullName,
                         ImageUrl = userExist.ImageUrl,
                         UserName = userExist.UserName,
                         PhoneNumber = userExist.PhoneNumber,
                         Bio = userExist.Bio,
-                        StartTime = userExist.StartTime,
-                        EndTime = userExist.EndTime,
                     }
                 };
                 return success;
@@ -136,6 +141,7 @@ namespace BarberShop.UnitOfWork.User
                     StatusCode = StatusCodes.Status200OK,
                     Data = new UserInfoDTO
                     {
+                        Id = userExist.Id,
                         FullName = userExist.FullName,
                         ImageUrl = userExist.ImageUrl,
                         UserName = userExist.UserName,
@@ -158,95 +164,89 @@ namespace BarberShop.UnitOfWork.User
 
         }
 
-        public async Task<ResponseDTO> SelectBarber(string id)
+        public async Task<ResponseDTO> UpdateUserAsync(string Username, string FullName, string PhoneNumber, IFormFile ImageUrl, string? bio)
         {
-            var barberExist = await _context.T_Users.FirstOrDefaultAsync(c => c.Id == id);
-            if (barberExist != null)
+            var userContext = _httpContext;
+            if (userContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                var barber = _mapper.Map<BarberInfoDTO>(barberExist);
-                var success = new ResponseDTO
+                var userRole = userContext.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+                var user = await _userManager.FindByNameAsync(Username);
+                if (user != null)
                 {
-                    Message = "Barber is retrieved successfully.",
-                    IsSuccess = true,
-                    StatusCode = StatusCodes.Status200OK,
-                    Data = barber
-                };
-                return success;
-            }
-            return new ResponseDTO()
-            {
-                Message = "No barber found.",
-                IsSuccess = false,
-                StatusCode = StatusCodes.Status200OK,
-                Data = null
-            };
-
-
-        }
-
-        public async Task<ResponseDTO> UpdateUserAsync(string Username, string FullName, string PhoneNumber, IFormFile ImageUrl)
-        {
-            var user = await _userManager.FindByIdAsync(Username);
-            if (user != null)
-            {
-                if (ImageUrl != null)
-                {
-                    if (ImageUrl.Length > 1048576)
+                    if (ImageUrl != null)
                     {
-                        var error = new ResponseDTO
+                        if (ImageUrl.Length > 1048576)
                         {
-                            Message = "حجم فایل تصویر بیشتر از ۱ مگابایت است",
-                            IsSuccess = false,
-                            StatusCode = StatusCodes.Status400BadRequest,
-                            Data = null
-                        };
-                        return error;
-                    }
-                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                    var fileExtension = Path.GetExtension(ImageUrl.FileName);
-                    if (!allowedExtensions.Contains(fileExtension.ToLower()))
-                    {
-                        return new ResponseDTO
+                            var error = new ResponseDTO
+                            {
+                                Message = "حجم فایل تصویر بیشتر از ۱ مگابایت است",
+                                IsSuccess = false,
+                                StatusCode = StatusCodes.Status400BadRequest,
+                                Data = null
+                            };
+                            return error;
+                        }
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var fileExtension = Path.GetExtension(ImageUrl.FileName);
+                        if (!allowedExtensions.Contains(fileExtension.ToLower()))
                         {
-                            Message = "نوع فایل نامعتبر است",
-                            IsSuccess = false,
-                            StatusCode = StatusCodes.Status400BadRequest,
-                            Data = null
-                        };
+                            return new ResponseDTO
+                            {
+                                Message = "نوع فایل نامعتبر است",
+                                IsSuccess = false,
+                                StatusCode = StatusCodes.Status400BadRequest,
+                                Data = null
+                            };
+                        }
+                        var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                        if (!Directory.Exists(uploadFolder))
+                        {
+                            Directory.CreateDirectory(uploadFolder);
+                        }
+                        var fileName = Guid.NewGuid().ToString() + fileExtension;
+                        var url = Path.Combine(uploadFolder, fileName);
+                        using (var fileStream = new FileStream(url, FileMode.Create))
+                        {
+                            await ImageUrl.CopyToAsync(fileStream);
+                        }
+                        user.ImageUrl = url;
                     }
-                    var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    if (!Directory.Exists(uploadFolder))
+                    user.FullName = FullName;
+                    user.PhoneNumber = PhoneNumber;
+                    if (userRole == "barber")
                     {
-                        Directory.CreateDirectory(uploadFolder);
+                        user.Bio = bio;
                     }
-                    var fileName = Guid.NewGuid().ToString() + fileExtension;
-                    var url = Path.Combine(uploadFolder, fileName);
-                    using (var fileStream = new FileStream(url, FileMode.Create))
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    var success = new ResponseDTO
                     {
-                        await ImageUrl.CopyToAsync(fileStream);
-                    }
-                    user.ImageUrl = url;
+                        Message = "کاربر با موفقیت به‌روزرسانی شد",
+                        IsSuccess = true,
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = null
+                    };
+                    return success;
+
                 }
-                user.FullName = FullName;
-                user.PhoneNumber = PhoneNumber;
-                await _context.SaveChangesAsync();
-                var success = new ResponseDTO
+                else
                 {
-                    Message = "کاربر با موفقیت به‌روزرسانی شد",
-                    IsSuccess = true,
-                    StatusCode = StatusCodes.Status200OK,
-                    Data = null
-                };
-                return success;
-
+                    return new ResponseDTO()
+                    {
+                        Message = "کاربر یافت نشد",
+                        IsSuccess = false,
+                        StatusCode = StatusCodes.Status404NotFound,
+                        Data = null
+                    };
+                }
             }
             else
             {
                 return new ResponseDTO()
                 {
-                    Message = "کاربر یافت نشد",
+                    Message = "User is not authenticated.",
                     IsSuccess = false,
-                    StatusCode = StatusCodes.Status404NotFound,
+                    StatusCode = StatusCodes.Status401Unauthorized,
                     Data = null
                 };
             }
