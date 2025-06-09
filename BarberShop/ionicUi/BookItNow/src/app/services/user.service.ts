@@ -56,7 +56,12 @@ export class UserService {
 
   }
 
-  //BarberShop/Getbarberbybarbershop
+  public setWorkSchedule(scheduleData:any) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.post(this.BASE_URL + 'BarberWorkSchedule/addworkschedule', scheduleData, { headers: headers })
+  }
+
+  //
 
 }
 
