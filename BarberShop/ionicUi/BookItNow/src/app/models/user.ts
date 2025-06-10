@@ -6,3 +6,18 @@ export interface registerData {
   Mobile: string;
   Password: string
 }
+
+export interface workSchedule {
+  startTimeMorning: string;
+  startTimeEvening: string;
+  endTimeMorning: string;
+  endTimeEvening: string;
+  scopeTime: string;
+  saturdayWork: boolean;
+  sundayWork: boolean;
+  mondayWork: boolean;
+  tuesdayWork: boolean;
+  wednesdayWork: boolean;
+  thursdayWork: boolean;
+  fridayWork: boolean
+}
