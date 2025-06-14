@@ -38,6 +38,10 @@ export class ChoiceBarbershopComponent implements OnInit {
 
   barbershops_list: any[] = [];
 
+  selectedID_Barbershop: any;
+
+  userInfo: any;
+
   //barbershops_list = [
   //  { iD_Barbershop: 1, name: 'آرایشگاه الف' },
   //  { iD_Barbershop: 2, name: 'آرایشگاه ب' },
@@ -46,42 +50,82 @@ export class ChoiceBarbershopComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.userservice.getUserInfo().subscribe((data: any) => {
+      console.log("getUserInfo : ", data);
+      this.userInfo = data.data;
+
+    })
+
+
+
     this.userservice.barbershop_list().subscribe((data: any) => {
-      console.log("data : ", data.data);
+      console.log("barbershop_list : ", data.data);
       this.barbershops_list = data.data;
     })
   }
 
-  async openModal1(barbershop: any) {
-    console.log(' شد:');
+  
+  async openModal(barbershop: any) {
 
-    const modal = await this.modalCtrl.create({
-      component: BarbershopDetailModalComponent,
-      componentProps: {
-        id: barbershop.iD_Barbershop,
-        name: barbershop.name
-      }
-    });
-    console.log(' شد:');
+    let counter = 0
 
-    await modal.present();
+    console.log('opening modal for', barbershop);
+
+    this.selectedID_Barbershop = barbershop.iD_Barbershop;
+
+    const sendRequestBefore = this.barbershops_list.filter(item => item.iD_Barbershop == this.selectedID_Barbershop);
+    console.log("barbers.length: ", sendRequestBefore[0].barbers.length);
+    if (sendRequestBefore[0].barbers.length > 0) {
+      sendRequestBefore[0].barbers.forEach(async (barber: any) => {
+        if (barber.id == this.userInfo.id) {
+          counter += 1;
+          if (counter > 0) {
+            console.log('counter: ', counter);
+            this.router.navigate(['/tabs-barber']);
+          } else {
+            const modal = await this.modalCtrl.create({
+              component: BarbershopDetailModalComponent,
+              componentProps: {
+                id: barbershop.iD_Barbershop,
+                name: barbershop.name,
+                address: barbershop.address,
+                description: barbershop.description,
+                ownerId: barbershop.ownerId,
+                phone: barbershop.phone,
+                iD_Barbershop: barbershop.iD_Barbershop,
+              }
+            });
+            await modal.present();
+          }
+        }
+      })
+    } else {
+      console.log("there is not sendRequestBefore[0].barbers");
+      const modal = await this.modalCtrl.create({
+        component: BarbershopDetailModalComponent,
+        componentProps: {
+          id: barbershop.iD_Barbershop,
+          name: barbershop.name,
+          address: barbershop.address,
+          description: barbershop.description,
+          ownerId: barbershop.ownerId,
+          phone: barbershop.phone,
+          iD_Barbershop: barbershop.iD_Barbershop,
+        }
+      });
+      await modal.present();
+    }
+
+
+
+
   }
 
-  async openModal(barbershop: any) {
-    console.log('opening modal for', barbershop);
-    const modal = await this.modalCtrl.create({
-      component: BarbershopDetailModalComponent,
-      componentProps: {
-        id: barbershop.iD_Barbershop,
-        name: barbershop.name,
-        address: barbershop.address,
-        description: barbershop.description,
-        ownerId: barbershop.ownerId,
-        phone: barbershop.phone,
-        iD_Barbershop: barbershop.iD_Barbershop,
-      }
-    });
-    await modal.present();
+
+
+  onBarbershopSelect(barbershop: any) {
+    console.log('آرایشگاه انتخاب‌شده:', barbershop);
   }
 
 
@@ -94,7 +138,7 @@ export class ChoiceBarbershopComponent implements OnInit {
       this.router.navigate(['/tabs-barber']);
 
 
-    }   
+    }
   }
 
 }

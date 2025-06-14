@@ -61,6 +61,13 @@ export class UserService {
     return this.http.post(this.BASE_URL + 'BarberWorkSchedule/addworkschedule', scheduleData, { headers: headers })
   }
 
+  public getWorkSchedule() {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.get(this.BASE_URL + 'BarberWorkSchedule/getworkschedule', { headers: headers })
+  }
+
+
+
   //
 
 }

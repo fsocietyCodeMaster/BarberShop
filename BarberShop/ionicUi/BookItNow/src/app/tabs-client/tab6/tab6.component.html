@@ -1,110 +1,235 @@
 
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>تنظیم برنامه کاری</ion-title>
+    <ion-title>پروفایل</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="workScheduleForm" (ngSubmit)="submitSchedule()">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>ساعت کاری - صبح</ion-card-title>
-      </ion-card-header>
 
-      <ion-card-content class="space-between">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" color="primary" (click)="showForm(toggleWorkSchedule)">{{toggleWorkSchedule}}</ion-button>
+      </ion-col>
 
-        <div class="space-around">
-          <label>از:</label>
-          <ion-datetime-button datetime="datetime"></ion-datetime-button>
-        </div>
+      <ion-col size="6">
+        <ion-button expand="block" color="medium" (click)="goToProfileEdit()">ویرایش پروفایل</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeMorning" pickerFormat="hh mm A">
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
+  <!-------------  ScheduleForm ---------------->
 
-        <div class="space-around">
-          <label>تا:</label>
-          <ion-datetime-button datetime="datetime2"></ion-datetime-button>
-        </div>
+  <ng-container *ngIf="showScheduleForm">
+    <form [formGroup]="workScheduleForm" (ngSubmit)="submitSchedule()">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>ساعت کاری - صبح</ion-card-title>
+        </ion-card-header>
 
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime2" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeMorning" pickerFormat="hh mm A">
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
+        <ion-card-content class="space-between">
 
-      </ion-card-content>
-    </ion-card>
+          <div class="space-around">
+            <label>از:</label>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+          </div>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>ساعت کاری - عصر</ion-card-title>
-      </ion-card-header>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeMorning" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
 
-      <ion-card-content class="space-between">
+          <div class="space-around">
+            <label>تا:</label>
+            <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+          </div>
 
-        <div class="space-around">
-          <label>از:</label>
-          <ion-datetime-button datetime="datetime3"></ion-datetime-button>
-        </div>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime2" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeMorning" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
 
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime3" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeEvening" pickerFormat="hh mm A">
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
+        </ion-card-content>
+      </ion-card>
 
-        <div class="space-around">
-          <label>تا:</label>
-          <ion-datetime-button datetime="datetime4"></ion-datetime-button>
-        </div>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>ساعت کاری - عصر</ion-card-title>
+        </ion-card-header>
 
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime4" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeEvening" pickerFormat="hh mm A">
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
+        <ion-card-content class="space-between">
 
-      </ion-card-content>
-    </ion-card>
+          <div class="space-around">
+            <label>از:</label>
+            <ion-datetime-button datetime="datetime3"></ion-datetime-button>
+          </div>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>بازه زمانی هر اصلاح</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item>
-          <ion-label>مدت هر اصلاح</ion-label>
-          <ion-select placeholder="انتخاب" formControlName="scopeTime">
-            <ion-select-option *ngFor="let t of timeIntervals" [value]="t">
-              {{ t }} دقیقه
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime3" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeEvening" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>روزهای کاری</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item *ngFor="let day of dayToggles">
-          <ion-label>{{ day.label }}</ion-label>
-          <ion-toggle slot="end" [formControlName]="day.controlName"></ion-toggle>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+          <div class="space-around">
+            <label>تا:</label>
+            <ion-datetime-button datetime="datetime4"></ion-datetime-button>
+          </div>
 
-    <ion-button expand="block" type="submit" color="success">
-      ذخیره برنامه کاری
-    </ion-button>
-  </form>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime4" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeEvening" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>بازه زمانی هر اصلاح</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>مدت هر اصلاح</ion-label>
+            <ion-select placeholder="انتخاب" formControlName="scopeTime">
+              <ion-select-option *ngFor="let t of timeIntervals" [value]="t">
+                {{ t }} دقیقه
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>روزهای کاری</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let day of dayToggles">
+            <ion-label>{{ day.label }}</ion-label>
+            <ion-toggle slot="end" [formControlName]="day.controlName"></ion-toggle>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="block" type="submit" color="success">
+        ذخیره برنامه کاری
+      </ion-button>
+    </form>
+  </ng-container>
+
+  <!-------------  EditScheduleForm ---------------->
+
+  <ng-container *ngIf="showEditScheduleForm">
+    <form [formGroup]="workScheduleEditForm" (ngSubmit)="submitEditSchedule()">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>ساعت کاری - صبح</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="space-between">
+
+          <div class="space-around">
+            <label>از:</label>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+          </div>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeMorning" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+
+          <div class="space-around">
+            <label>تا:</label>
+            <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+          </div>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime2" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeMorning" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>ساعت کاری - عصر</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="space-between">
+
+          <div class="space-around">
+            <label>از:</label>
+            <ion-datetime-button datetime="datetime3"></ion-datetime-button>
+          </div>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime3" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="startTimeEvening" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+
+          <div class="space-around">
+            <label>تا:</label>
+            <ion-datetime-button datetime="datetime4"></ion-datetime-button>
+          </div>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime4" presentation="time" displayFormat="hh:mm A" valueFormat="HH:mm" formControlName="endTimeEvening" pickerFormat="hh mm A">
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>بازه زمانی هر اصلاح</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>مدت هر اصلاح</ion-label>
+            <ion-select placeholder="انتخاب" formControlName="scopeTime">
+              <ion-select-option *ngFor="let t of timeIntervals" [value]="t">
+                {{ t }} دقیقه
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>روزهای کاری</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let day of dayToggles">
+            <ion-label>{{ day.label }}</ion-label>
+            <ion-toggle slot="end" [formControlName]="day.controlName"></ion-toggle>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="block" type="submit" color="success">
+        ذخیره برنامه کاری
+      </ion-button>
+    </form>
+  </ng-container>
+
+
 </ion-content>
