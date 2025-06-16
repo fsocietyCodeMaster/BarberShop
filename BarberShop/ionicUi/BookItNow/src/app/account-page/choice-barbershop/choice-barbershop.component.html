@@ -11,21 +11,14 @@
       <ion-icon name="megaphone-outline" slot="start"></ion-icon>
       <ion-label position="floating">انتخاب آرایشگاه</ion-label>
 
-      <!--<ion-select *ngIf="barbershops_list" class="rtl-select"
-                  formControlName="barbershopId">
-        <ion-select-option *ngFor="let barbershop of barbershops_list"
-                           [value]="barbershop.iD_Barbershop"
-                           (ionSelect)="openModal2(barbershop)">
-          {{ barbershop.name }}
-        </ion-select-option>
-      </ion-select>-->
-
-
       <ion-select *ngIf="barbershops_list"
                   formControlName="barbershopId"
                   (ionChange)="openModal($event.detail.value)"
                   placeholder="انتخاب آرایشگاه">
-        <ion-select-option *ngFor="let b of barbershops_list" [value]="b">
+                 
+        <ion-select-option *ngFor="let b of barbershops_list"
+                           [value]="b"
+                           (ionSelect)="onBarbershopSelect(b)">
           {{ b.name }}
         </ion-select-option>
       </ion-select>
