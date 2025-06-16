@@ -204,8 +204,8 @@
         <ion-card-content>
           <ion-item>
             <ion-label>مدت هر اصلاح</ion-label>
-            <ion-select placeholder="انتخاب" formControlName="scopeTime">
-              <ion-select-option *ngFor="let t of timeIntervals" [value]="t">
+            <ion-select placeholder="انتخاب" formControlName="scopeTime"  >
+              <ion-select-option *ngFor="let t of timeIntervals" [value]="t" >
                 {{ t }} دقیقه
               </ion-select-option>
             </ion-select>
@@ -226,7 +226,7 @@
       </ion-card>
 
       <ion-button expand="block" type="submit" color="success">
-        ذخیره برنامه کاری
+        ویرایش برنامه کاری
       </ion-button>
     </form>
   </ng-container>

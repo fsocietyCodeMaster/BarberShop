@@ -30,9 +30,9 @@ export class Tab6Component implements OnInit {
     private router: Router,) {
     this.workScheduleForm = fb.group({
       startTimeMorning: ['1970-01-01T09:00:00'],
-      endTimeMorning: ['1970-01-01T12:00:00'],
-      startTimeEvening: ['1970-01-01T03:00:00'],
-      endTimeEvening: ['1970-01-01T09:00:00'],
+      endTimeMorning: ['1970-01-01T13:00:00'],
+      startTimeEvening: ['1970-01-01T15:00:00'],
+      endTimeEvening: ['1970-01-01T21:00:00'],
       scopeTime: ['1970-01-01T09:00:00'],
       saturdayWork: [false],
       sundayWork: [false],
@@ -77,22 +77,73 @@ export class Tab6Component implements OnInit {
   }
 
 
+  private toIsoDateTime(timespan: string): string {
+    return `1970-01-01T${timespan}`;
+  }
+
+
 
   ngOnInit() {
     this.getWoekSchedule();
   }
 
-  getWoekSchedule() {
+  getWoekSchedule1() {
     this.userservice.getWorkSchedule().subscribe((data: any) => {
-      console.log("data of getWoekSchedule: ", data);
+      console.log("data of getWoekSchedule: ", data.data);
       if (data.isSuccess) {
         this.hasWorkSchedule = true;
+        this.hasWorkSchedule = data;
         this.toggleWorkSchedule = 'ویرایش برنامه کاری';
-        //this.workScheduleEditForm.startTimeMorning = data.
+        this.workScheduleEditForm.value['startTimeMorning'] = data.data.startTimeMorning;
+        this.workScheduleEditForm.value['endTimeMorning'] = data.data.endTimeMorning;
+        this.workScheduleEditForm.value['startTimeEvening'] = data.data.startTimeEvening;
+        this.workScheduleEditForm.value['endTimeEvening'] = data.data.endTimeEvening;
+        this.workScheduleEditForm.value['scopeTime'] = data.data.scopeTime;
+        this.workScheduleEditForm.value['saturdayWork'] = data.data.saturdayWork;
+        this.workScheduleEditForm.value['sundayWork'] = data.data.sundayWork;
+        this.workScheduleEditForm.value['mondayWork'] = data.data.mondayWork;
+        this.workScheduleEditForm.value['tuesdayWork'] = data.data.tuesdayWork;
+        this.workScheduleEditForm.value['thursdayWork'] = data.data.thursdayWork;
+        this.workScheduleEditForm.value['wednesdayWork'] = data.data.wednesdayWork;
+        this.workScheduleEditForm.value['fridayWork'] = data.data.fridayWork;
+
+        console.log("workScheduleEditForm: ", this.workScheduleEditForm.value);
+
       }
     })
   }
 
+  getWoekSchedule() {
+    this.userservice.getWorkSchedule().subscribe((res: any) => {
+
+      console.log("getWoekSchedule:", res);
+
+      if (!res.isSuccess) return;
+
+      const data = res.data;
+     
+      this.hasWorkSchedule = true;
+
+      this.toggleWorkSchedule = 'ویرایش برنامه کاری';
+
+      this.workScheduleEditForm.patchValue({
+        startTimeMorning: this.toIsoDateTime(data.startTimeMorning),
+        endTimeMorning: this.toIsoDateTime(data.endTimeMorning),
+        startTimeEvening: this.toIsoDateTime(data.startTimeEvening),
+        endTimeEvening: this.toIsoDateTime(data.endTimeEvening),
+        scopeTime: Number(data.scopeTime.split(':')[2]), // از "00:15:00" → 15
+        saturdayWork: data.saturdayWork,
+        sundayWork: data.sundayWork,
+        mondayWork: data.mondayWork,
+        tuesdayWork: data.tuesdayWork,
+        wednesdayWork: data.wednesdayWork,
+        thursdayWork: data.thursdayWork,
+        fridayWork: data.fridayWork
+      });
+
+      console.log("فرم ویرایش مقداردهی شد:", this.workScheduleEditForm.value);
+    });
+  }
 
 
   submitSchedule() {
@@ -155,10 +206,52 @@ export class Tab6Component implements OnInit {
 
 
   submitEditSchedule() {
+    if (this.workScheduleEditForm.invalid) return;
 
+    console.log("workScheduleEditForm before: ", this.workScheduleEditForm);
+
+    const f = this.workScheduleEditForm.value;
+    const payload = {
+      startTimeMorning: f.startTimeMorning.split('T')[1],
+      endTimeMorning: f.endTimeMorning.split('T')[1],
+      startTimeEvening: f.startTimeEvening.split('T')[1],
+      endTimeEvening: f.endTimeEvening.split('T')[1],
+      scopeTime: `00:${String(f.scopeTime).padStart(2, '0')}:00`,
+      saturdayWork: f.saturdayWork,
+      sundayWork: f.sundayWork,
+      mondayWork: f.mondayWork,
+      tuesdayWork: f.tuesdayWork,
+      wednesdayWork: f.wednesdayWork,
+      thursdayWork: f.thursdayWork,
+      fridayWork: f.fridayWork
+    };
+    console.log("workScheduleEditForm after: ", this.workScheduleEditForm);
+
+
+    this.userservice.updateWorkSchedule(payload).subscribe(async (res: any) => {
+      console.log("data in updateWorkSchedule: ", res);
+      if (res.isSuccess) {
+        const t = await this.toastCtrl.create({ message: 'بروزرسانی شد 🎉', duration: 2000, color: 'success' });
+        await t.present();
+        this.showEditScheduleForm = false;
+      } else {
+        const t = await this.toastCtrl.create({ message: 'خطا در بروزرسانی', duration: 2000, color: 'danger' });
+        await t.present();
+      }
+    }, err => console.error(err))
   }
 
+
   workSchedule = {
+    startTimeMorning: '',
+    endTimeMorning: '',
+    startTimeEvening: '',
+    endTimeEvening: '',
+    scopeTime: null,
+    selectedDays: [] as string[],
+  };
+
+  workScheduleEdit = {
     startTimeMorning: '',
     endTimeMorning: '',
     startTimeEvening: '',
@@ -184,11 +277,11 @@ export class Tab6Component implements OnInit {
     return this.workSchedule.selectedDays.includes(day);
   }
 
-  //showForm() {
-  //  if (!this.hasWorkSchedule) {
-  //    this.showScheduleForm = true;
-  //  }
-  //}
+  isDaySelectedEdit(day: string): boolean {
+    return this.workScheduleEdit.selectedDays.includes(day);
+  }
+
+
 
   async showForm(worrkScheduleStatus: any) {
 
@@ -205,13 +298,12 @@ export class Tab6Component implements OnInit {
             text: 'خیر',
             role: 'cancel',
             handler: () => {
-              // هیچ کاری نمی‌کنیم
             }
           },
           {
             text: 'بله',
             handler: () => {
-              this.showScheduleForm = true;
+              this.showEditScheduleForm = true;
             }
           }
         ]
@@ -219,13 +311,16 @@ export class Tab6Component implements OnInit {
       await alert.present();
     } else {
       this.showScheduleForm = true;
+      this.showEditScheduleForm = false;
+
     }
   }
 
 
   goToProfileEdit() {
     this.showScheduleForm = false;
-    this.router.navigate(['/profile-edit']);  // مسیر ویرایش پروفایل
+    this.showEditScheduleForm = false;
+    //this.router.navigate(['/profile-edit']);
   }
 
 
