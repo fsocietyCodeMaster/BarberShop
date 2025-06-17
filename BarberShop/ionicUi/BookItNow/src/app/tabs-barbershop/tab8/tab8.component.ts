@@ -41,7 +41,6 @@ export class Tab8Component implements OnInit {
   showTable = false;
 
 
-
   toggleTable() {
     this.showTable = !this.showTable;
   }
