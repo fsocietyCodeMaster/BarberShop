@@ -1,4 +1,6 @@
-﻿namespace BarberShop.DTO.Barber
+﻿using BarberShop.Model;
+
+namespace BarberShop.DTO.Barber
 {
     public class BarberInfoDTO
     {
@@ -19,5 +21,7 @@
         public bool WednesdayWork { get; set; }
         public bool ThursdayWork { get; set; }
         public bool FridayWork { get; set; }
+        public UserStatus? Status { get; set; }
+
     }
 }

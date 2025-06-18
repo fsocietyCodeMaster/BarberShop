@@ -84,6 +84,7 @@ namespace BarberShop.UnitOfWork.BarberSchedule
                         EndTimeMorning = c.EndTimeMorning,
                         StartTimeEvening = c.StartTimeEvening,
                         EndTimeEvening = c.EndTimeEvening,
+                        ScopeTime = c.ScopeTime,
                         SaturdayWork = c.SaturdayWork,
                         SundayWork = c.SundayWork,
                         MondayWork = c.MondayWork,
