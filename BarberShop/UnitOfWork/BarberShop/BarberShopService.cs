@@ -278,15 +278,14 @@ namespace BarberShop.UnitOfWork.BarberShop
                 var barbershop = await _context.T_BarberShops
                 .Where(c => c.IsActive && c.OwnerId == userId)
                 .SelectMany(c => c.Barbers)
-                .Select(c => new BarberInfoDTO
+                .Select(c => new BarberInfoForBarberShopDTO
                 {
-
-
                     Id = c.Id,
                     FullName = c.FullName,
                     PhoneNumber = c.PhoneNumber,
                     Bio = c.Bio,
-                    ImageUrl = c.ImageUrl
+                    ImageUrl = c.ImageUrl,
+                    Status = c.Status
                 })
         .ToListAsync();
                 if (barbershop.Any())
@@ -326,7 +325,7 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         }
 
-        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve)
+        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve,Guid? barberShopId)
         {
             if (string.IsNullOrEmpty(UserId))
             {
@@ -365,6 +364,7 @@ namespace BarberShop.UnitOfWork.BarberShop
             if (barber.Status == UserStatus.Pending && Approve == "verify")
             {
                 barber.Status = UserStatus.Verified;
+                barber.T_BarberShop_ID = barberShopId;
                 await _userManager.UpdateAsync(barber);
 
                 var success = new ResponseDTO
@@ -377,7 +377,7 @@ namespace BarberShop.UnitOfWork.BarberShop
                 return success;
             }
 
-            if (barber.Status == UserStatus.Rejected && Approve == "reject")
+            if (barber.Status == UserStatus.Pending && Approve == "reject")
             {
                 barber.Status = UserStatus.Rejected;
                 barber.T_BarberShop_ID = Guid.Empty;
