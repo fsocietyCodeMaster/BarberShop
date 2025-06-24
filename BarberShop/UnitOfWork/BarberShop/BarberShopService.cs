@@ -275,9 +275,8 @@ namespace BarberShop.UnitOfWork.BarberShop
                 var userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var barberShopUser = await _context.T_Users.FindAsync(userId);
                 //var ownerId = barberShopUser.BarberShop.OwnerId;
-                var barbershop = await _context.T_BarberShops
-                .Where(c => c.IsActive && c.OwnerId == userId)
-                .SelectMany(c => c.Barbers)
+                var barbershop = await _context.T_Users
+                .Where(c => c.IsActive && c.Status == UserStatus.Pending && c.RequestedBarberShopId.HasValue)
                 .Select(c => new BarberInfoForBarberShopDTO
                 {
                     Id = c.Id,
@@ -325,7 +324,7 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         }
 
-        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve,Guid? barberShopId)
+        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve)
         {
             if (string.IsNullOrEmpty(UserId))
             {
@@ -363,8 +362,9 @@ namespace BarberShop.UnitOfWork.BarberShop
             }
             if (barber.Status == UserStatus.Pending && Approve == "verify")
             {
+                barber.T_BarberShop_ID = barber.RequestedBarberShopId;
                 barber.Status = UserStatus.Verified;
-                barber.T_BarberShop_ID = barberShopId;
+                barber.RequestedBarberShopId = null;
                 await _userManager.UpdateAsync(barber);
 
                 var success = new ResponseDTO
@@ -380,7 +380,7 @@ namespace BarberShop.UnitOfWork.BarberShop
             if (barber.Status == UserStatus.Pending && Approve == "reject")
             {
                 barber.Status = UserStatus.Rejected;
-                barber.T_BarberShop_ID = Guid.Empty;
+                barber.RequestedBarberShopId = null;
                 await _userManager.UpdateAsync(barber);
 
                 var success = new ResponseDTO
