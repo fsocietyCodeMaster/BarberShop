@@ -16,6 +16,7 @@ namespace BarberShop.Model
         public string? ImageUrl { get; set; }
         public bool IsActive { get; set; }
         public UserStatus? Status { get; set; }
+        public Guid? RequestedBarberShopId { get; set; }
         public Guid? T_BarberShop_ID { get; set; }
         [ForeignKey("T_BarberShop_ID")]
         [JsonIgnore]

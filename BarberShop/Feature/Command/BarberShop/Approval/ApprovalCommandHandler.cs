@@ -14,7 +14,7 @@ namespace BarberShop.Feature.Command.BarberShop.Approval
         }
         public async Task<ResponseDTO> Handle(ApprovalCommand request, CancellationToken cancellationToken)
         {
-            var result = await _barberShop.ApproveUser(request.userId, request.approval,request.barberShopId);
+            var result = await _barberShop.ApproveUser(request.userId, request.approval);
             return result;
         }
     }
