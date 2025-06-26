@@ -1,11 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { IonicModule } from '@ionic/angular';
+//import { IonicModule } from '@ionic/angular';
+//import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButtons,
+  IonMenuButton,
+  IonMenu,
+  IonLabel,
+  IonButton,
+  IonItem,
+  IonList,
+  IonIcon,
+  IonSearchbar,
+  IonBackButton,
+  IonModal,
+  IonRouterOutlet,
+  IonListHeader,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonAvatar,
+  IonRow,
+  IonCol,
+  IonGrid,
+  IonSpinner
+} from '@ionic/angular/standalone';
 
-//import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+
 
 interface Barber {
   id: string;
@@ -17,7 +47,33 @@ interface Barber {
   templateUrl: './salon-barbers.page.html',
   styleUrls: ['./salon-barbers.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButtons,
+    IonMenuButton,
+    IonMenu,
+    IonLabel,
+    IonButton,
+    IonItem,
+    IonList,
+    IonIcon,
+    IonSpinner,
+    IonSearchbar,
+    IonBackButton,
+    IonModal,
+    IonRouterOutlet,
+    IonListHeader,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonAvatar,
+    IonRow,
+    IonCol,
+    IonGrid, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class SalonBarbersPage implements OnInit {
 

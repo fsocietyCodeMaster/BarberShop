@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-
+import { IonRouterOutlet } from '@ionic/angular/standalone';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-tab9',
@@ -9,12 +12,30 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [
     IonicModule,
+    IonRouterOutlet,
+    RouterModule            
   ],
 })
-export class Tab9Component  implements OnInit {
+export class Tab9Component implements OnInit {
 
-  constructor() { }
+  constructor(private userservice: UserService,
+    private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+
+
+  logout() {
+
+    localStorage.removeItem('Role');
+
+    localStorage.removeItem('token');
+
+    this.router.navigate(['/login']);
+
+
+  }
+
+
 
 }

@@ -49,10 +49,10 @@ export class Tab8Component implements OnInit {
 
     console.log('barberId in confirm methide:', barber);
 
-
     const data = {
       "userId": barber.id,
-      "approval": "verify"
+      "approval": "verify",
+      "barberShopId": this.barbershopId
     };
 
     this.userservice.barberApproval(data).subscribe(async (res: any) => {

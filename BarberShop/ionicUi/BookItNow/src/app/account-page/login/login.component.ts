@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
             //localStorage.setItem('token', JSON.stringify(data.message));
             if (data.data['userRole'][0] == "barbershop") {
               if (data.data['barberShopStatus'] == true) {
+                localStorage.setItem('Role', 'barbershop');
                 this.router.navigate(['/tabs-barbershop']);
               } else {
                 this.router.navigate(['/createBarbershop']);
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
 
               this.router.navigate(['/tabs']);
             } else if (data.data['userRole'][0] == "barber") {
+              localStorage.setItem('Role', 'barber');
               this.router.navigate(['/choiceBarbershop']);
             }
             document.cookie = `token=${data.message}; path=/; max-age=3600; secure; samesite=strict`;

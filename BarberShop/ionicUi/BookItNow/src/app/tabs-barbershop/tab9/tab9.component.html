@@ -1,9 +1,30 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="success">
+  <ion-toolbar color="b" class="header-gold">
     <ion-title>
-      Tab 9
+    پروفایل
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-list class="menu-items" dir="rtl" lines="none">
+
+    <ion-item button>
+      <ion-icon name="people-circle-outline"></ion-icon>
+      مشتری ها
+    </ion-item>
+
+    <ion-item button menuClose [routerLink]="['/barbershopProfile']">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      ویرایش پروفایل
+    </ion-item>
+
+    <ion-item button (click)="logout()" menuClose>
+      <ion-icon name="log-out-outline"></ion-icon>
+      خروج
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
 

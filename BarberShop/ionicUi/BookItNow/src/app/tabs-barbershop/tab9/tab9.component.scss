@@ -1,0 +1,27 @@
+.header-gold {
+  text-align: center;
+  background: #FF9F12;
+  color: white;
+}
+
+
+
+.menu-items {
+
+  ion-icon, ion-toggle {
+    //color: #76979f;
+    color: #FF9F12;
+    margin-left: 10px;
+  }
+
+  .active {
+    border-right: 6px solid #628cff;
+    color: #628cff;
+    padding-right: 15px;
+
+    ion-icon {
+      color: #628cff;
+    }
+  }
+}
+

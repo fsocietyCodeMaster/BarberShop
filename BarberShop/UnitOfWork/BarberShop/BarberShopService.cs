@@ -325,7 +325,7 @@ namespace BarberShop.UnitOfWork.BarberShop
 
         }
 
-        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve,Guid? barberShopId)
+        public async Task<ResponseDTO> ApproveUser(string UserId, string Approve, Guid? barberShopId)
         {
             if (string.IsNullOrEmpty(UserId))
             {
