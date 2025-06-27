@@ -274,7 +274,6 @@ namespace BarberShop.UnitOfWork.BarberShop
             {
                 var userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var barberShopUser = await _context.T_Users.FindAsync(userId);
-                //var ownerId = barberShopUser.BarberShop.OwnerId;
                 var barbershop = await _context.T_Users
                 .Where(c => c.IsActive && c.Status == UserStatus.Pending && c.RequestedBarberShopId.HasValue)
                 .Select(c => new BarberInfoForBarberShopDTO
@@ -286,7 +285,7 @@ namespace BarberShop.UnitOfWork.BarberShop
                     ImageUrl = c.ImageUrl,
                     Status = c.Status
                 })
-        .ToListAsync();
+                .ToListAsync();
                 if (barbershop.Any())
                 {
                     var success = new ResponseDTO
