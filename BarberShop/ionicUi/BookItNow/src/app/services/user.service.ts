@@ -71,6 +71,11 @@ export class UserService {
     return this.http.post(this.BASE_URL + 'BarberWorkSchedule/updateworkschedule', payload,{ headers: headers })
   }
 
+  public barberApproval(payload: any) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
+    return this.http.post(this.BASE_URL + 'BarberShop/barberapproval', payload, { headers: headers })
+  }
+
 
 
 

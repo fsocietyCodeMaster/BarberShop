@@ -131,7 +131,9 @@ export class Tab6Component implements OnInit {
         endTimeMorning: this.toIsoDateTime(data.endTimeMorning),
         startTimeEvening: this.toIsoDateTime(data.startTimeEvening),
         endTimeEvening: this.toIsoDateTime(data.endTimeEvening),
-        scopeTime: Number(data.scopeTime.split(':')[2]), // از "00:15:00" → 15
+        //scopeTime: Number(data.scopeTime.split(':')[2]), // از "00:15:00" → 15
+        scopeTime: Number(data.scopeTime.split(':')[1]),
+
         saturdayWork: data.saturdayWork,
         sundayWork: data.sundayWork,
         mondayWork: data.mondayWork,
