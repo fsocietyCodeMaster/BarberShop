@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { UserService } from '../../services/user.service';
 import { BarbershopDetailModalComponent } from '../../shared_components/barbershop-detail-modal/barbershop-detail-modal.component';
+import { count } from 'rxjs';
 
 @Component({
   selector: 'app-choice-barbershop',
@@ -52,8 +53,8 @@ export class ChoiceBarbershopComponent implements OnInit {
   ngOnInit() {
 
     this.userservice.getUserInfo().subscribe((data: any) => {
-      console.log("getUserInfo : ", data);
-      this.userInfo = data.data;
+      console.log("getUserInfo : ", data.data.id);
+      this.userInfo = data.data.id;
 
     })
 
@@ -65,7 +66,7 @@ export class ChoiceBarbershopComponent implements OnInit {
     })
   }
 
-  
+
   async openModal(barbershop: any) {
 
     let counter = 0
@@ -75,31 +76,45 @@ export class ChoiceBarbershopComponent implements OnInit {
     this.selectedID_Barbershop = barbershop.iD_Barbershop;
 
     const sendRequestBefore = this.barbershops_list.filter(item => item.iD_Barbershop == this.selectedID_Barbershop);
+
+    console.log("sendRequestBefore: ", sendRequestBefore);
+    console.log("barbers: ", sendRequestBefore[0].barbers);
     console.log("barbers.length: ", sendRequestBefore[0].barbers.length);
+
     if (sendRequestBefore[0].barbers.length > 0) {
       sendRequestBefore[0].barbers.forEach(async (barber: any) => {
-        if (barber.id == this.userInfo.id) {
+        console.log('this.userInfo in for loop ', this.userInfo);
+        console.log('barber.id in for loop ', barber.id);
+
+        if (barber.id == this.userInfo) {
+          console.log('barber.id == this.userInfo.id');
+
           counter += 1;
-          if (counter > 0) {
-            console.log('counter: ', counter);
-            this.router.navigate(['/tabs-barber']);
-          } else {
-            const modal = await this.modalCtrl.create({
-              component: BarbershopDetailModalComponent,
-              componentProps: {
-                id: barbershop.iD_Barbershop,
-                name: barbershop.name,
-                address: barbershop.address,
-                description: barbershop.description,
-                ownerId: barbershop.ownerId,
-                phone: barbershop.phone,
-                iD_Barbershop: barbershop.iD_Barbershop,
-              }
-            });
-            await modal.present();
-          }
         }
       })
+      if (counter > 0) {
+        console.log('counter: ', counter);
+        this.router.navigate(['/tabs-barber']);
+      }
+      else {
+        console.log('barber.id !== this.userInfo.id');
+
+        const modal = await this.modalCtrl.create({
+          component: BarbershopDetailModalComponent,
+          componentProps: {
+            id: barbershop.iD_Barbershop,
+            name: barbershop.name,
+            address: barbershop.address,
+            description: barbershop.description,
+            ownerId: barbershop.ownerId,
+            phone: barbershop.phone,
+            iD_Barbershop: barbershop.iD_Barbershop,
+          }
+        });
+        await modal.present();
+      }
+
+      //})
     } else {
       console.log("there is not sendRequestBefore[0].barbers");
       const modal = await this.modalCtrl.create({
@@ -116,9 +131,6 @@ export class ChoiceBarbershopComponent implements OnInit {
       });
       await modal.present();
     }
-
-
-
 
   }
 

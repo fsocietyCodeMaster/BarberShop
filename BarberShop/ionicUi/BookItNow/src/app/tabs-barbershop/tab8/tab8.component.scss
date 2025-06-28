@@ -66,19 +66,43 @@
   color: #333;
 }
 
+
+
 .title {
   text-align: center;
   font-size: 18px;
+  color: gray;
   font-weight: 500;
-  color: #2a2a2a;
+  //color: #2a2a2a;
 }
 
 .clickable-card {
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin-top: 15px;
+
+  button {
+    padding: 10px 20px;
+    background-color: white;
+    border-radius: 5px;
+    color: #885a01;
+    box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.14), 0 4px 1px -2px rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: all 0.35s ease;
+  }
 }
+
+.clickable-card {
+  button.clicked {
+    background-color: #eccc6a;
+    //color: white;
+    transform: translateY(5%) translateX(.5%);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+}
+
+
 
 .clickable-card:hover {
   transform: scale(1.02);

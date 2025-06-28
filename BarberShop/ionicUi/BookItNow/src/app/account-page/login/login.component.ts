@@ -72,7 +72,11 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/tabs']);
             } else if (data.data['userRole'][0] == "barber") {
               localStorage.setItem('Role', 'barber');
-              this.router.navigate(['/choiceBarbershop']);
+              if (data.data['status'] == 0 || data.data['status'] == 1) {
+                this.router.navigate(['/tabs-barber']);
+              } else {
+                this.router.navigate(['/choiceBarbershop']);
+              }
             }
             document.cookie = `token=${data.message}; path=/; max-age=3600; secure; samesite=strict`;
 
