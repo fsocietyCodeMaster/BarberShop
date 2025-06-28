@@ -277,7 +277,7 @@ namespace BarberShop.UnitOfWork.User
                 IsSuccess = true,
                 //Role = userRole.FirstOrDefault(),
                 StatusCode = StatusCodes.Status200OK,
-                Data = new { UserRole = userRole , barberShopStatus = barberShopExist}
+                Data = new { UserRole = userRole , barberShopStatus = barberShopExist,status = userExist.Status}
             };
         }
 
