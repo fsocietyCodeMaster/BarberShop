@@ -53,9 +53,9 @@ export class BarbershopDetailModalComponent  implements OnInit {
 
   sendRequest() {
     console.log("iD_Barbershop: ", this.iD_Barbershop);
-    this.userservice.sendRequest(this.iD_Barbershop).subscribe((data: any) => {
+    this.userservice.sendRequest(this.iD_Barbershop).subscribe(async(data: any) => {
       console.log("response from sendRequest: ", data);
-      if (data.message == "You are either verified or rejected you can't continue.") {
+      if (await data.isSuccess == true) {
       console.log("xxxxxxxxxxxxxxxxx ");
         this.presentToast('top');
         this.dismiss()

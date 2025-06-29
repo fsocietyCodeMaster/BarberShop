@@ -5,7 +5,8 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastController } from '@ionic/angular/standalone';
-
+import { HttpErrorResponse } from '@angular/common/http';
+//import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-tab8',
   templateUrl: './tab8.component.html',
@@ -40,6 +41,8 @@ export class Tab8Component implements OnInit {
 
   showTable = false;
 
+  isbarberListClicked = false;
+
 
   toggleTable() {
     this.showTable = !this.showTable;
@@ -62,12 +65,22 @@ export class Tab8Component implements OnInit {
       if (res.isSuccess) {
         const t = await this.toastCtrl.create({ message: `${barber.fullName} با موفقیت تایید شد `, duration: 2000, color: 'success' });
         await t.present();
+        this.barberList('false');
       } else {
         const t = await this.toastCtrl.create({ message: 'خطا در بروزرسانی', duration: 2000, color: 'danger' });
         await t.present();
       }
     });
 
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 
   reject(barber: any) {
@@ -79,23 +92,69 @@ export class Tab8Component implements OnInit {
       "approval": "reject"
     };
 
-    this.userservice.barberApproval(data).subscribe(async(res: any) => {
+    this.userservice.barberApproval(data).subscribe(async (res: any) => {
 
       console.log('data of reject in API:', data);
 
       if (res.isSuccess) {
-        const t = await this.toastCtrl.create({ message: `${barber.fullName} غیر فعال `, duration: 2000, color: 'success' });
+        const t = await this.toastCtrl.create({ message: `${barber.fullName} رد شد`, duration: 2000, color: 'success' });
         await t.present();
+        this.barberList('false');
+
       } else {
         const t = await this.toastCtrl.create({ message: 'خطا در بروزرسانی', duration: 2000, color: 'danger' });
         await t.present();
+
       }
 
     });
 
   }
 
-  barberList() {
+  barberList(openToggel: string) {
+    console.log("openToggel: ", openToggel);
+
+    this.userservice.Getbarberbybarbershop()
+      .subscribe(
+        (response: any) => {
+
+          console.log('data is: ', response);
+          this.barbers_list = response.data;
+          console.log('barbers_list is: ', this.barbers_list);
+          //this.toggleTable();
+          if (openToggel == 'true') {
+            this.isbarberListClicked = !this.isbarberListClicked;
+
+            this.showTable = !this.showTable;
+          }
+
+        },
+        (error: HttpErrorResponse) => {
+
+          console.error('HTTP Error:', error);
+
+
+          if (error.error && error.error.message === 'No pending barbers found.') {
+
+            this.showToast('هیچ آرایشگری در انتظار یافت نشد.');
+
+            this.barbers_list = [];
+            if (this.barbers_list.length == 0) {
+              console.error('this.barbers_list.length: ', this.barbers_list.length);
+              this.showTable = false;
+              this.isbarberListClicked = false;
+            }
+          } else {
+
+            this.showToast('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+          }
+        }
+      );
+  }
+
+
+
+  barberList1() {
     this.userservice.Getbarberbybarbershop().subscribe((data: any) => {
 
       console.log("data is: ", data);
@@ -108,7 +167,22 @@ export class Tab8Component implements OnInit {
 
       //this.barbers_list.filter((barber) => barber.status == 1);
 
-      this.toggleTable();
+      this.toggleTable(),
+
+        (error: HttpErrorResponse) => {
+
+          console.error('HTTP Error:', error);
+
+          if (error.error && error.error.message === 'No pending barbers found.') {
+
+            this.showToast('هیچ آرایشگری در انتظار یافت نشد.');
+
+            this.barbers_list = [];
+          } else {
+
+            this.showToast('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
+          }
+        }
     })
   }
 

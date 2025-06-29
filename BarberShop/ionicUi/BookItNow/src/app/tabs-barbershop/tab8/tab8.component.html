@@ -62,11 +62,9 @@
 
 
   <!-- دکمه نمایش لیست -->
-  <ion-card class="clickable-card" (click)="barberList()">
-    <ion-card-content>
-      <h3 class="title">لیست آرایشگرهای درخواست دهنده</h3>
-    </ion-card-content>
-  </ion-card>
+  <div class="clickable-card" >
+      <button [class.clicked]="isbarberListClicked" (click)="barberList('true')"  class="title">لیست آرایشگرهای درخواست دهنده</button>
+  </div>
 
   <!-- جدول لیست آرایشگرها -->
   <ion-card *ngIf="showTable">
