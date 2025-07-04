@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BarberShop.Controllers
 {
-    public class ClientController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ClientController : ControllerBase
     {
         private readonly ISender _sender;
         private readonly ILogger<BarberShopController> _logger;
@@ -17,7 +19,7 @@ namespace BarberShop.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("barberSchedule")]
         [Authorize(Roles ="user")]
         public async Task<IActionResult> GetBarberScheduel(string id)
         {
