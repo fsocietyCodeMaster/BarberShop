@@ -6,6 +6,7 @@ using BarberShop.UnitOfWork.Appointment;
 using BarberShop.UnitOfWork.Barber;
 using BarberShop.UnitOfWork.BarberSchedule;
 using BarberShop.UnitOfWork.BarberShop;
+using BarberShop.UnitOfWork.Client;
 using BarberShop.UnitOfWork.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -112,6 +113,7 @@ builder.Services.AddScoped<IBarberShop,BarberShopService>();
 builder.Services.AddScoped<IBarber,BarberService>();
 builder.Services.AddScoped<IBarberSchedule,BarberScheduleService>();
 builder.Services.AddScoped<IAppointment,AppointmentService>();
+builder.Services.AddScoped<IClient,ClientService>();
 builder.Services.AddScoped<SeedingData>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(policy =>
