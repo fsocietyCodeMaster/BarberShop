@@ -1,0 +1,130 @@
+<!--<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Tab 2
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content class="ion-padding">
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" sizeMd="5">
+        <h6 class="serch-date my-0 ms-3">
+          <ion-icon name="calendar-number-outline"></ion-icon>
+          تاریخ را انتخاب کنید
+        </h6>
+        <ng-persian-datepicker [uiTheme]="customTheme" [dateInitValue]="false" (dateOnSelect)="onSelect($event)">
+          <input type="text" class="calender" [formControl]="dateValue" placeholder="تاریخ را انتخاب کنید" />
+        </ng-persian-datepicker>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="oppoinment-hour" *ngIf="oppoinment_hour">
+    کارت نوبت‌های صبح
+    <ion-card class="button-grid-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">نوبت‌های صبح</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="button-grid">
+          <button *ngFor="let time of morningTimes; let i = index"
+                  class="time-button"
+                  [class.selected]="selectedTime === time"
+                  (click)="selectTime(time)">
+            {{ time }}
+          </button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    کارت نوبت‌های بعدازظهر
+    <ion-card class="button-grid-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">نوبت‌های بعدازظهر</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="button-grid">
+          <button *ngFor="let time of afternoonTimes; let i = index"
+                  class="time-button"
+                  [class.selected]="selectedTime === time"
+                  (click)="selectTime(time)">
+            {{ time }}
+          </button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+</ion-content>-->
+<!--=====================-->
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>رزرو نوبت</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- انتخاب تاریخ -->
+  <!--<ng-persian-datepicker [theme]="customTheme"
+                         (onSelect)="onSelect($event)"
+                         [formControl]="dateValue">
+  </ng-persian-datepicker>-->
+
+  <div class="serch-date-container">
+    <h6 class="serch-date my-0 ms-3">
+      <ion-icon name="calendar-number-outline"></ion-icon>
+      تاریخ را انتخاب کنید
+    </h6>
+  </div>
+ 
+  <ng-persian-datepicker [theme]="customTheme" [dateInitValue]="false" (dateOnSelect)="onSelect($event)">
+    <input type="text" class="calender" [formControl]="dateValue" placeholder="انتخاب تاریخ   " />
+  </ng-persian-datepicker>
+
+
+  <!-- کارت نوبت‌های صبح -->
+  <ion-card *ngIf="oppoinment_hour">
+    <ion-card-header>
+      <ion-card-title>نوبت‌های صبح</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="button-grid">
+        <button *ngFor="let t of morningTimes"
+                size="small"
+                class="time-button"
+                (click)="selectTime(t)"
+                [class.selected]="selectedTime === t">
+          {{ t }}
+        </button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- کارت نوبت‌های بعدازظهر -->
+  <ion-card *ngIf="oppoinment_hour">
+    <ion-card-header>
+      <ion-card-title>نوبت‌های بعدازظهر</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="button-grid">
+        <button *ngFor="let t of afternoonTimes"
+                size="small"
+                class="time-button"
+                (click)="selectTime(t)"
+                [class.selected]="selectedTime === t">
+          {{ t }}
+        </button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

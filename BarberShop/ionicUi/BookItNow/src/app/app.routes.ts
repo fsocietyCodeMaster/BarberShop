@@ -40,12 +40,15 @@ export const routes: Routes = [
   },
   {
     path: 'salons/:id/barbers',
-    loadComponent: () =>
-      import('./salon-barbers/salon-barbers.page').then(m => m.SalonBarbersPage)
+    loadComponent: () => import('./salon-barbers/salon-barbers.page').then(m => m.SalonBarbersPage)
+  },
+  {
+    path: 'appointment-reservation/:id',
+    loadComponent: () => import('./appointment-reservation/appointment-reservation.component').then(m => m.AppointmentReservationComponent)
   },
 
 
-  
+
 ];
 
 
