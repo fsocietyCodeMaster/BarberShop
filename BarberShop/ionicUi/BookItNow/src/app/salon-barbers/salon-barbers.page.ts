@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { RouterModule } from '@angular/router';
 //import { IonicModule } from '@ionic/angular';
 //import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -47,7 +48,9 @@ interface Barber {
   templateUrl: './salon-barbers.page.html',
   styleUrls: ['./salon-barbers.page.scss'],
   standalone: true,
-  imports: [IonHeader,
+  imports: [
+    RouterModule,
+    IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,

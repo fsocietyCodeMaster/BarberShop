@@ -87,3 +87,5 @@ export class LoginComponent implements OnInit {
   }
 
 }
+
+//puya-- -> status is added in login, table "approve barber" is editted, choice barbershop is eddited again
