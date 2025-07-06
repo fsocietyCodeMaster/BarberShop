@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { UserService } from '../services/user.service';
-import { IDatepickerTheme, NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { IDatepickerTheme, NgPersianDatepickerModule, IActiveDate } from 'ng-persian-datepicker';
 import { CommonModule } from '@angular/common';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { Jalali } from 'jalali-ts';
@@ -26,6 +26,8 @@ import { ToastController } from '@ionic/angular/standalone';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppointmentReservationComponent implements OnInit {
+
+  disabledWeekDays: number[] = [];
 
   morningTimes: string[] = [];
 
@@ -80,32 +82,57 @@ export class AppointmentReservationComponent implements OnInit {
 
     console.log("barberId : ", this.barberId);
 
-    //this.getAppointment();
+    this.userservice.showBarberSchedule(this.barberId)
+      .subscribe((res: any) => {
+        if (res.isSuccess && res.data) {
+          console.log("showBarberSchedule: ", res.data);
+          this.getDisabledWeekDays(res.data);
+       
+        }
+      });
 
   }
 
-  async onSelect(date: any) {
-    console.log("date.gregorian is : ", date.gregorian);
-    console.log("date.shamsiis : ", date.shamsi);
-    this.selctDate = date.shamsi;
+  async onSelect(event: IActiveDate) {
 
-    this.selctGorgianDate = date.gregorian;
+    const isoString = event.gregorian;
 
-    this.dateValue.setValue(date.shamsi);
 
-    this.oppoinment_hour = false;
-    this.userservice.showBarberSchedule(this.barberId)
-    this.oppoinment_hour = false;
+    const jsDate = new Date(isoString);
+
+
+    const weekday = jsDate.getDay();
+
+
+    if (this.disabledWeekDays.includes(weekday)) {
+      const toast = await this.toastCtrl.create({
+        message: 'امکان انتخاب این روز بدلیل عدم فعالیت آرایشگر وجود ندارد.',
+        duration: 2000,
+        color: 'warning'
+      });
+      await toast.present();
+      this.oppoinment_hour = false;
+      return;
+    }
+
+
+    this.selctDate = event.shamsi;
+    this.selctGorgianDate = event.gregorian;
+    this.dateValue.setValue(this.selctDate);
     this.selectedTime = null;
+    this.oppoinment_hour = false;
 
-    this.userservice.showBarberSchedule(this.barberId).subscribe((res: any) => {
-      if (res.isSuccess && res.data) {
-        console.log("showBarberSchedule: ", res.data);
-        this.schedule = res.data;
-        this.buildTimeGrids();
-        this.oppoinment_hour = true;
-      }
-    });
+    this.userservice.showBarberSchedule(this.barberId)
+      .subscribe((res: any) => {
+        if (res.isSuccess && res.data) {
+          console.log("showBarberSchedule: ", res.data);
+          this.getDisabledWeekDays(res.data);
+          this.schedule = res.data;
+          this.scopeTime = this.schedule.scopeTime;
+          this.buildTimeGrids();
+          this.oppoinment_hour = true;
+        }
+      });
   }
 
   private buildTimeGrids() {
@@ -226,4 +253,40 @@ export class AppointmentReservationComponent implements OnInit {
     })
   }
 
+  private getDisabledWeekDays(schedule: BarberSchedule): void {
+    const mapping: { [K in keyof BarberSchedule]?: number } = {
+      sundayWork: 0,
+      mondayWork: 1,
+      tuesdayWork: 2,
+      wednesdayWork: 3,
+      thursdayWork: 4,
+      fridayWork: 5,
+      saturdayWork: 6,
+    };
+
+    //const disabled: number[] = [];
+
+    for (const key in mapping) {
+      // @ts-ignore
+      if (mapping.hasOwnProperty(key) && schedule[key] === false) {
+        // @ts-ignore
+        this.disabledWeekDays.push(mapping[key]);
+      }
+    }
+    console.log("disabled: ", this.disabledWeekDays)
+
+    //return disabled;
+  }
+
+}
+
+
+interface BarberSchedule {
+  sundayWork: boolean;
+  mondayWork: boolean;
+  tuesdayWork: boolean;
+  wednesdayWork: boolean;
+  thursdayWork: boolean;
+  fridayWork: boolean;
+  saturdayWork: boolean;
 }
