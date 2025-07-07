@@ -205,7 +205,6 @@ export class AppointmentReservationComponent implements OnInit {
     return formatted;
   }
 
-
   async selectTime(time: string) {
 
     this.setAppointmentForm.patchValue({
