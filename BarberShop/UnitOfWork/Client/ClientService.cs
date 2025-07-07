@@ -1,6 +1,9 @@
-﻿using BarberShop.Context;
+﻿using AutoMapper;
+using BarberShop.Context;
+using BarberShop.DTO.Appointment;
 using BarberShop.DTO.ResponseResult;
 using BarberShop.DTO.WorkSchedule;
+using BarberShop.Migrations;
 using BarberShop.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +12,53 @@ namespace BarberShop.UnitOfWork.Client
     public class ClientService : IClient
     {
         private readonly BarberShopDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ClientService(BarberShopDbContext context)
+        public ClientService(BarberShopDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
+
+        public async Task<ResponseDTO> GetBarberAppointment(string barberId,DateTime date)
+        {
+            if (string.IsNullOrWhiteSpace(barberId))
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There is a problem while sending parameter.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+                return error;
+            }
+            var reserved = await _context.T_Appointments.Where(c => c.T_Barber_ID == barberId && c.IsActive && c.AppointmentDate.Date == date.Date).ToListAsync();
+            var mappedReserved = _mapper.Map<IEnumerable<ShowAppointmentClient>>(reserved);
+            if (reserved.Any())
+            {
+                var success = new ResponseDTO
+                {
+                    Message = "appointments is created successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = mappedReserved
+                };
+                return success;
+            }
+            else
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There are no appointments.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+                return error;
+            }
+        }
+
         public async Task<ResponseDTO> GetBarberSchedule(string barberId)
         {
             if (string.IsNullOrWhiteSpace(barberId))

@@ -12,9 +12,6 @@ namespace BarberShop.Feature.Command.Appointment.SetAppointment
         {
             _appointment = appointment;
         }
-
-        public IAppointment Appointment { get; }
-
         public async Task<ResponseDTO> Handle(SetAppointmentCommand request, CancellationToken cancellationToken)
         {
             var result = await _appointment.SetAppointment(request.ID_Barber, request.AppointmentDate, request.StartTime, request.EndTime);
