@@ -6,6 +6,7 @@ using BarberShop.DTO.WorkSchedule;
 using BarberShop.Migrations;
 using BarberShop.Repository;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BarberShop.UnitOfWork.Client
 {
@@ -35,11 +36,11 @@ namespace BarberShop.UnitOfWork.Client
             }
             var reserved = await _context.T_Appointments.Where(c => c.T_Barber_ID == barberId && c.IsActive && c.AppointmentDate.Date == date.Date).ToListAsync();
             var mappedReserved = _mapper.Map<IEnumerable<ShowAppointmentClient>>(reserved);
-            if (reserved.Any())
+            if (mappedReserved.Any())
             {
                 var success = new ResponseDTO
                 {
-                    Message = "appointments is created successfully.",
+                    Message = "appointments is retrieved successfully.",
                     IsSuccess = true,
                     StatusCode = StatusCodes.Status200OK,
                     Data = mappedReserved
@@ -107,6 +108,45 @@ namespace BarberShop.UnitOfWork.Client
                 var error = new ResponseDTO
                 {
                     Message = "There is no schedule.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+                return error;
+            }
+        }
+
+        public async Task<ResponseDTO> GetClientAppointment(string clientId)
+        {
+            if (string.IsNullOrWhiteSpace(clientId))
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There is a problem while sending parameter.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Data = null
+                };
+                return error;
+            }
+            var reserved = await _context.T_Appointments.Where(c => c.T_Client_ID == clientId && c.IsActive).ToListAsync();
+            var mappedReserved = _mapper.Map<IEnumerable<ShowAppointmentClient>>(reserved);
+            if (mappedReserved.Any())
+            {
+                var success = new ResponseDTO
+                {
+                    Message = "appointments is retrieved successfully.",
+                    IsSuccess = true,
+                    StatusCode = StatusCodes.Status200OK,
+                    Data = mappedReserved
+                };
+                return success;
+            }
+            else
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There are no appointments.",
                     IsSuccess = false,
                     StatusCode = StatusCodes.Status400BadRequest,
                     Data = null
