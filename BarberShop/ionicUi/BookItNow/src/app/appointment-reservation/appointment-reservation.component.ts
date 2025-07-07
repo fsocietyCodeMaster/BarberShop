@@ -49,6 +49,9 @@ export class AppointmentReservationComponent implements OnInit {
 
   scopeTime: any;
 
+  bookedTimes: string[] = ['18:30'];
+
+
 
   private schedule: any = null;
 
@@ -122,6 +125,9 @@ export class AppointmentReservationComponent implements OnInit {
     this.selectedTime = null;
     this.oppoinment_hour = false;
 
+
+    console.log("selctGorgianDate: ", this.selctGorgianDate)
+
     this.userservice.showBarberSchedule(this.barberId)
       .subscribe((res: any) => {
         if (res.isSuccess && res.data) {
@@ -131,6 +137,9 @@ export class AppointmentReservationComponent implements OnInit {
           this.scopeTime = this.schedule.scopeTime;
           this.buildTimeGrids();
           this.oppoinment_hour = true;
+
+          this.getAppointment();
+
         }
       });
   }
@@ -248,8 +257,14 @@ export class AppointmentReservationComponent implements OnInit {
   }
 
   getAppointment() {
-    this.userservice.getAppointment().subscribe((res: any) => {
-      console.log("getAppointment: ", res)
+
+    this.bookedTimes = [];
+
+    this.userservice.getAppointment(this.barberId, this.selctGorgianDate).subscribe((res: any) => {
+      console.log("getAppointment: ", res);
+      this.bookedTimes = res.data.map((item: any) => item.startTime.slice(0, 5));
+      console.log("bookedTimes: ", this.bookedTimes);
+      ;
     })
   }
 

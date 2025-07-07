@@ -105,7 +105,7 @@
                 size="small"
                 class="time-button"
                 (click)="selectTime(t)"
-                [class.selected]="selectedTime === t">
+                [class.selected]="selectedTime === t"  [disabled]="bookedTimes.includes(t)">
           {{ t }}
         </button>
       </div>
@@ -123,7 +123,7 @@
                 size="small"
                 class="time-button"
                 (click)="selectTime(t)"
-                [class.selected]="selectedTime === t">
+                [class.selected]="selectedTime === t" [disabled]="bookedTimes.includes(t)">
           {{ t }}
         </button>
       </div>

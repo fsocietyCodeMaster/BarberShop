@@ -120,6 +120,15 @@ ion-searchbar {
   text-align: right;
 }
 
+button[disabled] {
+  //--background: #1a73b3;
+  color: darkgray;
+  background-color: #1a73b3;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
 
 //=====================
 

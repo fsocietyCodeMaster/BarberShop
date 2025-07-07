@@ -86,12 +86,12 @@ export class UserService {
     return this.http.post(this.BASE_URL + 'Appointment/setappointment', payload, { headers: headers })
   }
 
-  public getAppointment() {
+  public getAppointment(barberId: any, date: any) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-    return this.http.get(this.BASE_URL + 'Appointment/getpendingappointments', { headers: headers })
+    return this.http.get(this.BASE_URL + `Client/barberappointment?id=${barberId}&date=${date}`, { headers: headers })
   }
 
-  //Appointment/getpendingappointments
+  //Client/barberappointment?id=
 
 
 
