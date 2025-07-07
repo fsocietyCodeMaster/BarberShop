@@ -86,8 +86,11 @@
     </h6>
   </div>
  
-  <ng-persian-datepicker [theme]="customTheme" [dateInitValue]="false" (dateOnSelect)="onSelect($event)">
-    <input type="text" class="calender" [formControl]="dateValue" placeholder="انتخاب تاریخ   " />
+  <ng-persian-datepicker [theme]="customTheme"                         
+                         [dateInitValue]="false"
+                         (dateOnSelect)="onSelect($event)">
+    <input type="text" class="calender"  [formControl]="dateValue" placeholder="انتخاب تاریخ" [value]="selctDate || ''"
+      readonly />
   </ng-persian-datepicker>
 
 
@@ -102,7 +105,7 @@
                 size="small"
                 class="time-button"
                 (click)="selectTime(t)"
-                [class.selected]="selectedTime === t">
+                [class.selected]="selectedTime === t"  [disabled]="bookedTimes.includes(t)">
           {{ t }}
         </button>
       </div>
@@ -120,7 +123,7 @@
                 size="small"
                 class="time-button"
                 (click)="selectTime(t)"
-                [class.selected]="selectedTime === t">
+                [class.selected]="selectedTime === t" [disabled]="bookedTimes.includes(t)">
           {{ t }}
         </button>
       </div>
