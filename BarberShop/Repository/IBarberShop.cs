@@ -10,6 +10,5 @@ namespace BarberShop.Repository
         Task<ResponseDTO> UpdateBarberShopForm(Guid id,string Name,string Address, string Phone, string Description,IFormFile ImageUrl);
         Task<ResponseDTO> GetPendingBarbers();
         Task<ResponseDTO> ApproveUser(string UserId, string Approve);
-
     }
 }
