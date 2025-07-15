@@ -6,5 +6,6 @@ namespace BarberShop.Repository
     {
         Task<ResponseDTO> GetBarberSchedule(string barberId);
         Task<ResponseDTO> GetBarberAppointment(string barberId,DateTime date);
+        Task<ResponseDTO> GetClientAppointment(string clientId);
     }
 }

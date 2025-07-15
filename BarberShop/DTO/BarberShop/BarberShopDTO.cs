@@ -9,6 +9,7 @@ namespace BarberShop.DTO.BarberShop
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
+        public string? ImageUrl { get; set; }
         public List<BarberInfoForBarberShopDTO> Barbers { get; set; } = new List<BarberInfoForBarberShopDTO>();
     }
 }
