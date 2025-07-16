@@ -102,7 +102,7 @@ namespace BarberShop.Controllers
 
         }
         [HttpGet("barbershop")]
-        [Authorize(Roles ="barber,barbershop")]
+        [Authorize(Roles ="user,barber,barbershop")]
         public async Task<IActionResult> BarberShop(Guid id)
         {
             if (ModelState.IsValid)
