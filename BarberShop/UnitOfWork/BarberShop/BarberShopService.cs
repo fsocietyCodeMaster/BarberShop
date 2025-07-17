@@ -96,8 +96,9 @@ namespace BarberShop.UnitOfWork.BarberShop
                     Directory.CreateDirectory(uploadFolder);
                 }
                 var fileName = Guid.NewGuid().ToString() + fileExtension;
-                var url = Path.Combine(uploadFolder, fileName);
-                using (var fileStream = new FileStream(url, FileMode.Create))
+                var url = "/" + fileName;
+                var uploadUrl = Path.Combine(uploadFolder, fileName);
+                using (var fileStream = new FileStream(uploadUrl, FileMode.Create))
                 {
                     await ImageUrl.CopyToAsync(fileStream);
                 }
@@ -157,6 +158,9 @@ namespace BarberShop.UnitOfWork.BarberShop
             if (barberShopExist != null)
             {
                 var barberShop = _mapper.Map<BarberShopDTO>(barberShopExist);
+                var relativePath = $"{barberShop.ImageUrl}";
+                var absoluteUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}{_httpContext.HttpContext.Request.PathBase}{relativePath}";
+                barberShop.ImageUrl = absoluteUrl;
                 var success = new ResponseDTO
                 {
                     Message = "BarberShop successfully retrieved.",
