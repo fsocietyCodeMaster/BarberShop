@@ -12,7 +12,8 @@ interface Salon {
   id: string;
   name: string;
   address: string;
-  iD_Barbershop: string
+  iD_Barbershop: string;
+  image_url_barbershop?: string;
 }
 
 @Component({
@@ -31,6 +32,7 @@ export class Tab2Page {
 
   salons: Salon[] = [];
   filteredSalons: Salon[] = [];
+  image_url_barbershop: string[] = [];
   searchTerm = '';
 
   constructor(private alertController: AlertController,
@@ -86,6 +88,21 @@ export class Tab2Page {
       console.log("res.data: ", res.data)
       this.salons = res.data;
       this.filteredSalons = [...this.salons];
+      console.log("filtered saloon:L ", this.filteredSalons);
+      this.filteredSalons.forEach((item: any, idx) => {
+        this.userservice.barber_list(item.iD_Barbershop).subscribe((result: any) => {
+          console.log("resut: ", result.data.imageUrl);
+          console.log(`this.salons[${idx}]: `, this.salons[idx]);
+          this.salons[idx]["image_url_barbershop"] = result.data.imageUrl;
+        })
+      })
+
+      console.log("this.image_url_barbershop: ", this.image_url_barbershop[0]);
+      console.log("new salons: ", this.salons);
+      this.userservice.barber_list(this.image_url_barbershop[0]).subscribe((result: any) => {
+        console.log("resut: ", result);
+      })
+
     });
   }
 

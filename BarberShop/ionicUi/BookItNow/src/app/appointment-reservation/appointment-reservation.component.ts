@@ -223,7 +223,7 @@ export class AppointmentReservationComponent implements OnInit {
       cssClass: 'alert-html',
       buttons: [
         {
-          text: 'نوبت مجدد',
+          text: 'خیر',
           role: 'cancel',
           handler: () => {
             this.selectedTime = null;
@@ -244,6 +244,7 @@ export class AppointmentReservationComponent implements OnInit {
                     color: 'success'
                   });
                   await toast.present();
+                  this.getAppointment();
                 }
               }
             })
