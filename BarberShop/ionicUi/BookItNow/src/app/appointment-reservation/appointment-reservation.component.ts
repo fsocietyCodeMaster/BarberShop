@@ -260,6 +260,7 @@ export class AppointmentReservationComponent implements OnInit {
 
     this.bookedTimes = [];
 
+
     this.userservice.getAppointment(this.barberId, this.selctGorgianDate).subscribe((res: any) => {
       console.log("getAppointment: ", res);
       this.bookedTimes = res.data.map((item: any) => item.startTime.slice(0, 5));
