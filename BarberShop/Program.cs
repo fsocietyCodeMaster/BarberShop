@@ -14,11 +14,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Seri-log
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.Console()
@@ -105,7 +105,6 @@ builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthentication,AuthService>();
 builder.Services.AddScoped<IUser,UserService>();

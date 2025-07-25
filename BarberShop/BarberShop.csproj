@@ -5,6 +5,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>86ff763d-06aa-47b8-8ec5-ddbd0bc81920</UserSecretsId>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

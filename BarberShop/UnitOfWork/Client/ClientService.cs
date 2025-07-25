@@ -15,13 +15,13 @@ namespace BarberShop.UnitOfWork.Client
         private readonly BarberShopDbContext _context;
         private readonly IMapper _mapper;
 
-        public ClientService(BarberShopDbContext context,IMapper mapper)
+        public ClientService(BarberShopDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<ResponseDTO> GetBarberAppointment(string barberId,DateTime date)
+        public async Task<ResponseDTO> GetBarberAppointment(string barberId, DateTime date)
         {
             if (string.IsNullOrWhiteSpace(barberId))
             {
@@ -129,30 +129,50 @@ namespace BarberShop.UnitOfWork.Client
                 };
                 return error;
             }
-            var reserved = await _context.T_Appointments.Where(c => c.T_Client_ID == clientId && c.IsActive).ToListAsync();
-            var mappedReserved = _mapper.Map<IEnumerable<ShowAppointmentClient>>(reserved);
-            if (mappedReserved.Any())
-            {
-                var success = new ResponseDTO
-                {
-                    Message = "appointments is retrieved successfully.",
-                    IsSuccess = true,
-                    StatusCode = StatusCodes.Status200OK,
-                    Data = mappedReserved
-                };
-                return success;
-            }
-            else
+            var reserved = await _context.T_Appointments.Where(c => c.T_Client_ID == clientId && c.IsActive).FirstOrDefaultAsync();
+            if (reserved == null)
             {
                 var error = new ResponseDTO
                 {
-                    Message = "There are no appointments.",
+                    Message = "There is no appointment.",
                     IsSuccess = false,
-                    StatusCode = StatusCodes.Status400BadRequest,
+                    StatusCode = StatusCodes.Status404NotFound,
                     Data = null
                 };
                 return error;
             }
+            var barber = await _context.Users.Include(c=> c.BarberShop).FirstOrDefaultAsync(c => c.Id == reserved.T_Barber_ID);
+            if (barber == null)
+            {
+                var error = new ResponseDTO
+                {
+                    Message = "There is no barber.",
+                    IsSuccess = false,
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Data = null
+                };
+                return error;
+            }
+            var result = new ShowAppointmentClient
+            {
+                AppointmentDate = reserved.AppointmentDate,
+                StartTime = reserved.StartTime,
+                EndTime = reserved.EndTime,
+                BarberName = barber.FullName,
+                BarberShopName = barber.BarberShop.Name,
+                BarberShopAddress = barber.BarberShop.Address,
+                BarberShopPhone = barber.BarberShop.Phone,
+
+            };
+            var success = new ResponseDTO
+            {
+                Message = "appointments is retrieved successfully.",
+                IsSuccess = true,
+                StatusCode = StatusCodes.Status200OK,
+                Data = result
+            };
+            return success;
         }
     }
 }
+

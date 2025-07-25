@@ -276,10 +276,11 @@ namespace BarberShop.UnitOfWork.BarberShop
         {
             if (_httpContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                var userId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var barberShopUser = await _context.T_Users.FindAsync(userId);
-                var barbershop = await _context.T_Users
-                .Where(c => c.IsActive && c.Status == UserStatus.Pending && c.RequestedBarberShopId.HasValue)
+                var barberShopId = _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var barberShopOwner = await _context.T_Users.FindAsync(barberShopId);
+                var barberShop = await _context.T_BarberShops.FirstOrDefaultAsync(c=> c.OwnerId == barberShopId);
+                var barbers = await _context.T_Users
+                .Where(c => c.IsActive && c.Status == UserStatus.Pending && c.RequestedBarberShopId == barberShop.ID_Barbershop)
                 .Select(c => new BarberInfoForBarberShopDTO
                 {
                     Id = c.Id,
@@ -290,14 +291,14 @@ namespace BarberShop.UnitOfWork.BarberShop
                     Status = c.Status
                 })
                 .ToListAsync();
-                if (barbershop.Any())
+                if (barbers.Any())
                 {
                     var success = new ResponseDTO
                     {
                         Message = "Pending barbers are retrieved successfully.",
                         IsSuccess = true,
                         StatusCode = StatusCodes.Status200OK,
-                        Data = barbershop
+                        Data = barbers
                     };
                     return success;
                 }
