@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { CommonModule } from '@angular/common';
-
+import { UserService } from '../services/user.service';
+import { clientAppointment } from '../models/user'
+import { Jalali } from 'jalali-ts';
 
 @Component({
   selector: 'app-tab3',
@@ -21,7 +23,7 @@ import { CommonModule } from '@angular/common';
     ExploreContainerComponent],
 })
 export class Tab3Page {
-  constructor() { }
+  constructor(private userservice: UserService) { }
 
   appointments = [
     {
@@ -41,6 +43,48 @@ export class Tab3Page {
       time: '14:30'
     },
   ];
+
+  clientappointment: clientAppointment = {
+
+    appointmentDate: "2025-06-25T00:00:00",
+    barberName: "",
+    barberShopAddress: "",
+    barberShopName: "",
+    barberShopPhone: "",
+    startTime: "",
+    endTime: "",
+  };
+
+  shamsiDate: string = '';
+
+
+  ngOnInit() {
+    this.getclientappointment();
+  }
+
+  getclientappointment() {
+    this.userservice.getclientappointment().subscribe((data: any) => {
+
+      this.clientappointment = data.data;
+
+      console.log("clientappointment: ", this.clientappointment);
+
+      this.changeDate(this.clientappointment.appointmentDate);
+    })
+  }
+
+  changeDate(gregorianDateStr: string) {
+   
+    const gregorianDate = new Date(gregorianDateStr);
+
+    const jalaliDate = new Jalali(gregorianDate);
+   
+    this.shamsiDate = jalaliDate.format('YYYY/MM/DD');
+
+    console.log(this.shamsiDate);
+
+    this.clientappointment.appointmentDate = this.shamsiDate;
+  }
 
 
 }

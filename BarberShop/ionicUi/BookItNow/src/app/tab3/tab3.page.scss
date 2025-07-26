@@ -1,5 +1,13 @@
+.mild-blue {
+  text-align: center;
+  background: rgb(92, 169, 217);
+  color: white;
+}
+
 ion-content {
-  --background: #f9f9f9;
+  //--background: #f9f9f9;
+  //--background: lightsteelblue;
+  --background: rgb(199, 213, 230);
 }
 
 .reservation-card {

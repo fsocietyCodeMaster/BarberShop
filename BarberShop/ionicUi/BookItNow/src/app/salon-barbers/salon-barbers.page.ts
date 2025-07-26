@@ -98,7 +98,7 @@ export class SalonBarbersPage implements OnInit {
   loadBarbers() {
     this.userService.barbershop_list().subscribe({
       next: (res: any) => {
-        // فرض API: { data: { barbers: [...] } }
+       
         this.barbers = res.data;
         console.log("this.barbers: ", this.barbers);
         this.onSearch();

@@ -7,40 +7,42 @@
 </ion-header>-->
 
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="mild-blue" class="mild-blue">
     <ion-title>نوبت‌های رزرو شده</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ng-container *ngIf="appointments.length > 0; else noData">
-    <ion-list>
-      <ion-card *ngFor="let appt of appointments" class="reservation-card">
+<ion-content class="ion-padding father">
+  <ng-container *ngIf="clientappointment; else noData">
+      <ion-card  class="reservation-card">
         <ion-card-header>
           <ion-card-title>
-            {{ appt.date }} — {{ appt.customerName }}
+            {{ clientappointment.appointmentDate }} — {{ clientappointment.barberName }}
           </ion-card-title>
         </ion-card-header>
         <ion-card-content class="reservation-body">
           <div class="field">
             <span class="label">آرایشگاه:</span>
-            <span class="value">{{ appt.salonName }}</span>
+            <span class="value">{{ clientappointment.barberShopName }}</span>
           </div>
           <div class="field">
             <span class="label">آدرس:</span>
-            <span class="value">{{ appt.salonAddress }}</span>
+            <span class="value">{{ clientappointment.barberShopAddress }}</span>
           </div>
           <div class="field">
             <span class="label">تلفن:</span>
-            <span class="value">{{ appt.salonPhone }}</span>
+            <span class="value">{{ clientappointment.barberShopPhone }}</span>
           </div>
           <div class="field">
-            <span class="label">ساعت:</span>
-            <span class="value">{{ appt.time }}</span>
+            <span class="label">ساعت شروع :</span>
+            <span class="value">{{ clientappointment.startTime }}</span>
+          </div>
+          <div class="field">
+            <span class="label">ساعت پایان:</span>
+            <span class="value">{{ clientappointment.endTime }}</span>
           </div>
         </ion-card-content>
       </ion-card>
-    </ion-list>
   </ng-container>
 
   <ng-template #noData>

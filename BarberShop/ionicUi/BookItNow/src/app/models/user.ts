@@ -21,3 +21,14 @@ export interface workSchedule {
   thursdayWork: boolean;
   fridayWork: boolean
 }
+
+export interface clientAppointment {
+
+  appointmentDate: string;
+  barberName: string;
+  barberShopAddress: string;
+  barberShopName: string;
+  barberShopPhone: string;
+  startTime: string;
+  endTime: string;
+}
