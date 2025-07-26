@@ -31,12 +31,22 @@ export class Tab8Component implements OnInit {
 
   barbershopId: any;
 
+  image_url_barbershop: string = '';
+
+
 
   ngOnInit() {
     this.userservice.getUserInfo().subscribe((data: any) => {
-      this.barbershopId = data.data['id'];
-      console.log('this.barbershopId: ', this.barbershopId)
+      this.barbershopId = data.data;
+      console.log('barbershop: ', this.barbershopId);
     })
+
+    //e2d99702 - 1f37 - 42fc - 22da -08ddbd5c74bd
+    this.userservice.barber_list('9e107f58-6449-483b-cdf6-08ddc524d36e').subscribe((result: any) => {
+      console.log("resut: ", result);
+      this.image_url_barbershop = result.data.imageUrl;
+    })
+
   }
 
   showTable = false;

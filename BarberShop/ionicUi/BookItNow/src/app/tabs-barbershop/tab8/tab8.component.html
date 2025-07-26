@@ -62,9 +62,16 @@
 
 
   <!-- دکمه نمایش لیست -->
-  <div class="clickable-card" >
-      <button [class.clicked]="isbarberListClicked" (click)="barberList('true')"  class="title">لیست آرایشگرهای درخواست دهنده</button>
+  <div class="clickable-card">
+    <button [class.clicked]="isbarberListClicked" (click)="barberList('true')" class="title">لیست آرایشگرهای درخواست دهنده</button>
   </div>
+
+  <img [src]="image_url_barbershop" alt="Alternate Text" />
+  <!--<img src="http://localhost:5066/wwwroot/ad2d8771-3185-4d70-83cb-dd6316454833.jpg" alt="Alternate Text" />-->
+
+
+  
+
 
   <!-- جدول لیست آرایشگرها -->
   <ion-card *ngIf="showTable">

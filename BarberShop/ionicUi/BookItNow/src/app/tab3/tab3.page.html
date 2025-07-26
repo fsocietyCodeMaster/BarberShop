@@ -1,17 +1,52 @@
-<ion-header [translucent]="true">
+<!--<ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
       Tab 3
     </ion-title>
   </ion-toolbar>
+</ion-header>-->
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>نوبت‌های رزرو شده</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="appointments.length > 0; else noData">
+    <ion-list>
+      <ion-card *ngFor="let appt of appointments" class="reservation-card">
+        <ion-card-header>
+          <ion-card-title>
+            {{ appt.date }} — {{ appt.customerName }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="reservation-body">
+          <div class="field">
+            <span class="label">آرایشگاه:</span>
+            <span class="value">{{ appt.salonName }}</span>
+          </div>
+          <div class="field">
+            <span class="label">آدرس:</span>
+            <span class="value">{{ appt.salonAddress }}</span>
+          </div>
+          <div class="field">
+            <span class="label">تلفن:</span>
+            <span class="value">{{ appt.salonPhone }}</span>
+          </div>
+          <div class="field">
+            <span class="label">ساعت:</span>
+            <span class="value">{{ appt.time }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </ng-container>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ng-template #noData>
+    <div class="no-data">
+      هیچ نوبتی یافت نشد.
+    </div>
+  </ng-template>
 </ion-content>
+

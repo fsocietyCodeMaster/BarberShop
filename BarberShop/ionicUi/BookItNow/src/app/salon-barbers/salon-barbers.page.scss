@@ -1,35 +1,122 @@
-ion-spinner {
+//ion-spinner {
+//  display: block;
+//  margin: 40px auto;
+//}
+
+//.barber-card {
+//  margin-bottom: 16px;
+//  border-radius: 12px;
+//  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+//}
+
+//ion-card-header {
+//  display: flex;
+//  align-items: center;
+//}
+
+//.avatar {
+//  width: 48px;
+//  height: 48px;
+//  margin-left: 12px;
+//}
+
+//.no-result {
+//  text-align: center;
+//  color: #888;
+//  margin-top: 40px;
+//}
+
+//.bi-person-fill {
+//  color: rgb(92, 169, 217);
+//}
+
+//.bi-telephone-fill {
+//  color: forestgreen;
+//}
+
+
+//===== second menuitem ==========
+
+// Spinner در وسط
+.spinner-center {
   display: block;
-  margin: 40px auto;
+  margin: 60px auto;
 }
+
 
 .barber-card {
   margin-bottom: 16px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
 }
 
-ion-card-header {
+
+.card-header {
+  background: linear-gradient(135deg, #42a5f5 0%, #478ed1 100%);
+  //color: #fff;
+  //color: #e0ac08;
   display: flex;
   align-items: center;
+  padding: 12px;
+
+  ion-card-title {
+    color: lightskyblue;
+    flex: 1;
+    margin: 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .arrow-icon {
+    font-size: 20px;
+    opacity: 0.8;
+  }
 }
+
 
 .avatar {
   width: 48px;
   height: 48px;
-  margin-left: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
 }
+
+
+.card-body {
+  background-color: #fafafa;
+  padding: 8px 12px;
+
+  ion-item {
+    --inner-padding-start: 0;
+    --inner-padding-end: 0;
+    margin: 4px 0;
+
+    ion-icon {
+      color: #666;
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    ion-label {
+      font-size: 14px;
+      color: #333;
+    }
+  }
+}
+
 
 .no-result {
   text-align: center;
-  color: #888;
-  margin-top: 40px;
-}
-
-.bi-person-fill {
-  color: rgb(92, 169, 217);
-}
-
-.bi-telephone-fill {
-  color: forestgreen;
+  color: #999;
+  margin-top: 60px;
+  font-size: 16px;
 }
